@@ -53,7 +53,6 @@
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
             <version>1.1</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- To run javax.websocket in embedded server -->
@@ -124,6 +123,20 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.23</version>
+        </dependency>
+        
+        <!-- rabbitmq client -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.1.2</version>
+        </dependency>
+        
+        <!-- webjar tasks -->
+        <dependency>
+            <groupId>com.jarredweb.repo</groupId>
+            <artifactId>webjar-tasklet</artifactId>
+            <version>0.4.1-beta</version>
         </dependency>
         
         <!-- junit testing -->

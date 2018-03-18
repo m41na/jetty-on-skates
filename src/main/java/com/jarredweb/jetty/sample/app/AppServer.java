@@ -4,8 +4,8 @@ import com.jarredweb.jetty.sample.config.JerseyConfig;
 import com.jarredweb.jetty.sample.handler.FormHandler;
 import com.jarredweb.jetty.sample.handler.HelloHandler;
 import com.jarredweb.jetty.sample.resource.EventsSocket;
-import com.jarredweb.jetty.sample.tasklet.AbstractTasklet;
-import com.jarredweb.jetty.sample.tasklet.TaskletMonitor;
+import com.jarredweb.webjar.tasklet.AbstractTasklet;
+import com.jarredweb.webjar.tasklet.TaskletMonitor;
 import java.io.IOException;
 import java.util.concurrent.Future;
 import javax.servlet.ServletException;
@@ -62,7 +62,7 @@ public class AppServer extends AbstractTasklet {
             //add context handler on '/form' context
             ContextHandler form = new ContextHandler();
             form.setContextPath("/form");
-            hello.setHandler(new FormHandler());
+            form.setHandler(new FormHandler());
             
             //add these to a context handlers collection
             ContextHandlerCollection contexts = new ContextHandlerCollection();

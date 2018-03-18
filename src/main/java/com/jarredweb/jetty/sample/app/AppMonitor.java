@@ -1,6 +1,6 @@
 package com.jarredweb.jetty.sample.app;
 
-import com.jarredweb.jetty.sample.tasklet.TaskletMonitor;
+import com.jarredweb.webjar.tasklet.TaskletMonitor;
 
 public class AppMonitor {
     

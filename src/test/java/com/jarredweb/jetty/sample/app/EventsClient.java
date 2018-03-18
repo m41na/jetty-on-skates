@@ -1,4 +1,4 @@
-package com.jarredweb.jetty.sample.client;
+package com.jarredweb.jetty.sample.app;
 
 import com.jarredweb.jetty.sample.resource.EventsSocket;
 import java.net.URI;

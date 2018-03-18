@@ -22,6 +22,6 @@ public class MessageController {
     public OutputMessage multiChatHandler(InputMessage message) throws Exception{
         Thread.sleep(1000l); //simulated delay
         String time = new SimpleDateFormat("HH:mm").format(new Date());
-        return new OutputMessage(message.from, message.text, time);
+        return new OutputMessage("app", message.text, time);
     }
 }
