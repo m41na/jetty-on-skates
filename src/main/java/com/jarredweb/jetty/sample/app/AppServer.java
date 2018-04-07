@@ -82,7 +82,7 @@ public class AppServer extends AbstractTasklet {
             //initialise web socket servlet
             configureWebSocketHandler(wsContext);
             
-            //add shitdown hook
+            //add shutdown hook
             addRuntimeShutdownHook(server);
             
             //start and access server using http://localhost:8080
@@ -95,14 +95,14 @@ public class AppServer extends AbstractTasklet {
     }
 
     @Override
-    public void stop() {
+    public void start() {
         if(server == null){
             TaskletMonitor.deploy(getName(), this);
         }
     }
 
     @Override
-    public void start() {
+    public void stop() {
         TaskletMonitor.undeploy(getName());
         try{
             server.stop();
