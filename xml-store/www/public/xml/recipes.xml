@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipes>
+    <recipe>
+        <name>Gush'gosh</name>
+        <ingredients>  
+            <ingredient>
+                <qty>1</qty>
+                <unit>pound</unit>
+                <food>hamburger</food>
+            </ingredient>
+            
+            <ingredient>
+                <qty>1</qty>
+                <unit>pound</unit>
+                <food>elbow macaroni</food>
+            </ingredient>
+           
+            <ingredient>
+                <qty>2</qty>
+                <unit>cups</unit>
+                <food>brown sugar</food>
+            </ingredient>
+            
+            <ingredient>
+                <qty>1</qty>
+                <unit>bag</unit>
+                <food>chopped onions</food>
+            </ingredient>
+           
+            <ingredient>
+                <qty>1</qty>
+                <unit>teaspoon</unit>
+                <food>dried dill</food>
+            </ingredient>
+        </ingredients>
+        
+        <instructions>
+            <instruction>Brown the hamburger.</instruction>
+            <instruction>Add onions and cook until transparent.</instruction>
+            <instruction>Add brown sugar and dill.</instruction>
+            <instruction>Cook and drain pasta.</instruction>
+            <instruction>Combine meat and pasta.</instruction>
+        </instructions>
+    </recipe>
+    
+    <recipe>
+        <name>A balanced breakfast</name>
+        <ingredients>
+            <ingredient>
+                <qty>1</qty>
+                <unit>cup</unit>
+                <food>cereal</food>
+            </ingredient>
+           
+            <ingredient>
+                <qty>1</qty>
+                <unit>glass</unit>
+                <food>orange juice</food>
+            </ingredient>
+           
+            <ingredient>
+                <qty>1</qty>
+                <unit>cup</unit>
+                <food>milk</food>
+            </ingredient>
+           
+            <ingredient>
+                <qty>2</qty>
+                <unit>slices</unit>
+                <food>toast</food>
+            </ingredient>
+        </ingredients>
+        
+        <instructions>
+            <instruction>Combine cereal and milk in bowl.</instruction>
+            <instruction>Add all ingredients to table.</instruction>
+        </instructions>
+    </recipe> 
+</recipes>

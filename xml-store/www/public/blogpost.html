@@ -1,0 +1,200 @@
+<html xmlns="http://www.w3.org/TR/xhtml1/strict" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="" name="description"/>
+<meta content="" name="author"/>
+<title>Bloggin Out</title>
+<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="vendor/summernote/summernote.css"/>
+<link rel="stylesheet" href="css/blog-post.css"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<div class="container">
+<a href="#" class="navbar-brand">Start Bootstrap</a>
+<button aria-label="Toggle navigation" aria-expanded="false" aria-controls="navbarResponsive" data-target="#navbarResponsive" data-toggle="collapse" type="button" class="navbar-toggler">
+<span class="navbar-toggler-icon"/>
+</button>
+<div id="navbarResponsive" class="collapse navbar-collapse">
+<ul class="navbar-nav ml-auto">
+<li class="nav-item active">
+<a href="#" class="nav-link">Home
+                                        <span class="sr-only">(current)</span>
+</a>
+</li>
+<li class="nav-item">
+<a href="#" class="nav-link">About</a>
+</li>
+<li class="nav-item">
+<a href="#" class="nav-link">Services</a>
+</li>
+<li class="nav-item">
+<a href="#" class="nav-link">Contact</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="row">
+<div data-id="blogpost" class="col-lg-8">
+<h1 data-editable="" class="mt-4" data-name="/blogpost/title">A step at a time</h1>
+<p class="lead">
+            by
+            <a data-editable="" href="#" data-name="/blogpost/author">Dwayne Wayne</a>
+</p>
+<hr/>
+<p>Posted on 
+            <span data-name="/blogpost/date-posted">January 1, 2018 at 12:00 PM</span>
+</p>
+<hr/>
+<p data-editable="" data-name="/blogpost/blog-image"><img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""></p>
+<hr/>
+<p data-editable="" class="lead" data-name="/blogpost/summary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
+<div data-editable="" class="blog-content" data-name="/blogpost/content"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+
+          <p>Lessons Learnt along the way
+            <ul>
+                <li>Wrap all html data in [CDATA[]] tags inside the xml. In this manner, the content is rendered correctly</li>
+                <li>For all content wrapped in [CDATA[]] tags, unwrap it like this - <xsl:value-of select="prop" disable-output-escaping="yes"/> </li>
+                <li>Since XSL auto-closes empty tags, add some content when defining elements such as textarea</li>
+                <li>For html entities on the page, use html numbers instead, for instance
+                    <ol>
+                        <li>
+                            &nbsp; &iexcl; &cent; &pound; &curren; &yen; &brvbar; &sect; &uml; &copy; &ordf;
+                        </li>
+                        <li>
+                            &#160; &#161; &#162; &#163; &#164; &#165; &#166; &#167; &#168; &#169; &#170;
+                        </li>
+                    </ol>
+                </li>
+            </ul>
+          </p>
+
+          <blockquote class="blockquote">
+            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in
+              <cite title="Source Title">Source Title</cite>
+            </footer>
+          </blockquote>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+</div>
+<hr/>
+<div class="card my-4">
+<h5 class="card-header">Leave a Comment:</h5>
+<div class="card-body">
+<form>
+<div class="form-group">
+<textarea rows="3" class="form-control">Content Here</textarea>
+</div>
+<button class="btn btn-primary" type="submit">Submit</button>
+</form>
+</div>
+</div>
+        <div class="media my-3">
+<span data-name="/blogpost/comments//comment/@id=1/comment-img"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt=""></span>
+<div class="media-body">
+<h5 class="mt-0" data-name="/blogpost/comments//comment/@id=1/author">Gerald Khali</h5>
+<div class="comment-content" data-name="/blogpost/comments//comment/@id=1/content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div>
+</div>
+</div>
+        <div class="media my-3">
+<span data-name="/blogpost/comments//comment/@id=2/comment-img"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt=""></span>
+<div class="media-body">
+<h5 class="mt-0" data-name="/blogpost/comments//comment/@id=2/author">Gerald Khali</h5>
+<div class="comment-content" data-name="/blogpost/comments//comment/@id=2/content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div>
+                <div class="media my-3">
+<span data-name="/blogpost/comments//comment/@id=3/comment-img"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt=""></span>
+<div class="media-body">
+<h5 class="mt-0" data-name="/blogpost/comments//comment/@id=3/author">Gerald Khali</h5>
+<div class="comment-content" data-name="/blogpost/comments//comment/@id=3/content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div>
+                        <div class="media my-3">
+<span data-name="/blogpost/comments//comment/@id=4/comment-img"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt=""></span>
+<div class="media-body">
+<h5 class="mt-0" data-name="/blogpost/comments//comment/@id=4/author">Gerald Khali</h5>
+<div class="comment-content" data-name="/blogpost/comments//comment/@id=4/content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div>
+</div>
+</div>
+                    </div>
+</div>
+                <div class="media my-3">
+<span data-name="/blogpost/comments//comment/@id=5/comment-img"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt=""></span>
+<div class="media-body">
+<h5 class="mt-0" data-name="/blogpost/comments//comment/@id=5/author">Gerald Khali</h5>
+<div class="comment-content" data-name="/blogpost/comments//comment/@id=5/content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div>
+</div>
+</div>
+            </div>
+</div>
+    </div>
+<div class="col-md-4">
+<div class="card my-4">
+<h5 class="card-header">Search</h5>
+<div class="card-body">
+<div class="input-group">
+<input placeholder="Search for..." class="form-control" type="text"/>
+<span class="input-group-btn">
+<button id="search-btn" type="button" class="btn btn-secondary">Go!</button>
+</span>
+</div>
+</div>
+</div>
+<div class="card my-4">
+<h5 class="card-header">Categories</h5>
+<div class="card-body">
+<div class="row">
+<div class="col-lg-6">
+<ul class="list-unstyled mb-0">
+<li>
+<a href="#">Web Design</a>
+</li>
+<li>
+<a href="#">HTML</a>
+</li>
+<li>
+<a href="#">Freebies</a>
+</li>
+</ul>
+</div>
+<div class="col-lg-6">
+<ul class="list-unstyled mb-0">
+<li>
+<a href="#">JavaScript</a>
+</li>
+<li>
+<a href="#">CSS</a>
+</li>
+<li>
+<a href="#">Tutorials</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="card my-4">
+<h5 class="card-header">Side Widget</h5>
+<div class="card-body">
+                                    You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<footer class="footer py-5 bg-dark">
+<div class="container">
+<p class="m-0 text-center text-white">Copyright &copy; JarredWeb 2018</p>
+</div>
+</footer>
+<script src="vendor/jquery/jquery.min.js">&nbsp;</script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">&nbsp;</script>
+<script src="vendor/summernote/summernote.js">&nbsp;</script>
+<script src="js/editor.js">&nbsp;</script>
+<script src="js/sync-xml.js">&nbsp;</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-repo name="blogs">
+    <entities>
+        <entity tag="blog">com.jarredweb.jetty.sample.xml.Blog</entity>
+        <entity tag="author">com.jarredweb.jetty.sample.xml.Author</entity>
+        <entity tag="comment">com.jarredweb.jetty.sample.xml.Comment</entity>
+    </entities>
+    
+    <list property="blogs" contains="blog">
+        <blog type="entity">
+            <id></id>
+            <title></title>
+            <author type="entity">
+                <id></id>
+                <emailAddr></emailAddr>
+                <firstName></firstName>
+                <lastName></lastName>
+            </author>
+            <category></category>
+            <list property="tags" entity="string"></list>
+            <sumamry></sumamry>
+            <content></content>
+            <list property="comments" entity="comment"></list>
+            <published></published>
+            <publishDate></publishDate>
+            <dateCreated></dateCreated>
+            <lastUpdated></lastUpdated>
+        </blog>
+    </list>
+</xml-repo>

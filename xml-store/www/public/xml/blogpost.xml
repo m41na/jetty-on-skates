@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blogpost>
+    <title>A step at a time</title> 
+    <author>Dwayne Wayne</author>
+    <date-posted>January 1, 2018 at 12:00 PM</date-posted>
+    <blog-image><![CDATA[<img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">]]></blog-image>
+    <summary>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</summary>
+    <content><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+
+          <p>Lessons Learnt along the way
+            <ul>
+                <li>Wrap all html data in [CDATA[]] tags inside the xml. In this manner, the content is rendered correctly</li>
+                <li>For all content wrapped in [CDATA[]] tags, unwrap it like this - <xsl:value-of select="prop" disable-output-escaping="yes"/> </li>
+                <li>Since XSL auto-closes empty tags, add some content when defining elements such as textarea</li>
+                <li>For html entities on the page, use html numbers instead, for instance
+                    <ol>
+                        <li>
+                            &nbsp; &iexcl; &cent; &pound; &curren; &yen; &brvbar; &sect; &uml; &copy; &ordf;
+                        </li>
+                        <li>
+                            &#160; &#161; &#162; &#163; &#164; &#165; &#166; &#167; &#168; &#169; &#170;
+                        </li>
+                    </ol>
+                </li>
+            </ul>
+          </p>
+
+          <blockquote class="blockquote">
+            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in
+              <cite title="Source Title">Source Title</cite>
+            </footer>
+          </blockquote>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+]]></content>
+    <comments>
+        <comment id="1">
+            <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+            <author>Gerald Khali</author>
+            <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+            <comments></comments>
+        </comment>
+        <comment id="2">
+            <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+            <author>Gerald Khali</author>
+            <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+            <comments>
+                <comment id="3">
+                    <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+                    <author>Gerald Khali</author>
+                    <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+                    <comments>
+                        <comment id="4">
+                            <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+                            <author>Gerald Khali</author>
+                            <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+                            <comments></comments>
+                        </comment>
+                    </comments>
+                </comment>
+                <comment id="5">
+                    <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+                    <author>Gerald Khali</author>
+                    <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+                    <comments></comments>
+                </comment>
+            </comments>
+            <comment id="6">
+                <comment-img><![CDATA[<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">]]></comment-img>
+                <author>Gerald Khali</author>
+                <content>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</content>
+                <comments></comments>
+            </comment>
+        </comment>
+    </comments>
+</blogpost>

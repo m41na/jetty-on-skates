@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>com.jarredweb.works</groupId>
-    <artifactId>jetty-playground</artifactId>
+    <artifactId>jetty-incubate</artifactId>
     <version>0.1.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -161,13 +161,5 @@
             </plugin>
         </plugins>
     </build>
-    <name>jetty-playground</name>
-    <modules>
-        <module>jetty-incubate</module>
-        <module>jetty-frmwork</module>
-        <module>jetty-mvc-classic</module>
-        <module>jetty-mvc-flux</module>
-        <module>simplest-app</module>
-        <module>xml-store</module>
-    </modules>
+    <name>jetty-incubate</name>
 </project>

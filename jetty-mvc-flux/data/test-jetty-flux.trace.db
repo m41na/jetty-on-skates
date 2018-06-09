@@ -1,0 +1,12 @@
+2018-05-11 21:55:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_PRODUCTS" not found; SQL statement:
+select * from tbl_products where item_id=1 [42102-196]
+2018-05-11 21:55:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_PRODUCTS" not found; SQL statement:
+select * from tbl_products limit 100 offset 0 [42102-196]
+2018-05-11 21:57:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_PRODUCTS" not found; SQL statement:
+select * from tbl_products where item_id=1 [42102-196]
+2018-05-11 21:57:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_PRODUCTS" not found; SQL statement:
+select * from tbl_products limit 100 offset 0 [42102-196]
