@@ -1,0 +1,28 @@
+{
+    "name": "sample-edit",
+    "version": "1.0.0",
+    "description": "sample editor",
+    "main": "src/index.js",
+    "private": true,
+    "scripts": {
+        "start": "node server.js",
+        "dev": "webpack && npm start"
+    },
+    "author": "m41na@yahoo.com (Stephen Maina)",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "babel-preset-env": "^1.7.0",
+        "css-loader": "^0.28.11",
+        "file-loader": "^1.1.11",
+        "style-loader": "^0.21.0",
+        "webpack": "^4.10.2",
+        "webpack-cli": "^3.0.1",
+        "webpack-dev-server": "^3.1.4"
+    },
+    "dependencies": {
+        "cors": "^2.8.4",
+        "express": "^4.16.3"
+    }
+}

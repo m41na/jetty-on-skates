@@ -132,11 +132,11 @@
             <version>5.1.2</version>
         </dependency>
         
-        <!-- webjar tasks -->
+        <!-- zesty tasks -->
         <dependency>
             <groupId>com.jarredweb.works</groupId>
-            <artifactId>webjar-tasklet</artifactId>
-            <version>0.4.1-beta</version>
+            <artifactId>zesty-tasklet</artifactId>
+            <version>0.5.0-beta</version>
         </dependency>
         
         <!-- junit testing -->
@@ -163,11 +163,13 @@
     </build>
     <name>jetty-playground</name>
     <modules>
-        <module>jetty-incubate</module>
-        <module>jetty-frmwork</module>
-        <module>jetty-mvc-classic</module>
-        <module>jetty-mvc-flux</module>
-        <module>simplest-app</module>
         <module>xml-store</module>
+        <module>jetty-incubate</module>
+        <module>jetty-router</module>
+        <module>jetty-mvc-classic</module>
+        <module>jetty-mvc-annotate</module>
+        <module>jetty-flux-mvc</module>
+        <module>jetty-flux-react</module>
+        <module>zesty-quick-template</module>
     </modules>
 </project>

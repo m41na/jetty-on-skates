@@ -1,21 +1,19 @@
 package com.jarredweb.xmlstore.app;
 
-import com.jarredweb.webjar.http.app.AppRunnerBuilder;
-import com.jarredweb.webjar.http.app.WebjarBootup;
+import com.jarredweb.zesty.http.app.ZestyRunner;
 import com.jarredweb.xmlstore.service.StartupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-public class XmlStoreApp extends AppRunnerBuilder{
+public class XmlStoreApp extends ZestyRunner{
     
-    private static final Logger LOG = LoggerFactory.getLogger(AppRunnerBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZestyRunner.class);
     
     @Override
-    public WebjarBootup initStartupService(ApplicationContext ctx) {
+    public void initApplication(ApplicationContext ctx) {
         StartupService startup = ctx.getBean(StartupService.class);
         startup.initialize();
-        return this;
     }
 
     public static void main(String... args) {

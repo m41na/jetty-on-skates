@@ -24,12 +24,6 @@
         <property name="suffix" value=".jsp"/>
         <property name="order" value="1"/>
     </bean>
-    
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/jsp/"/>
-        <property name="suffix" value=".jsp"/>
-        <property name="order" value="1"/>
-    </bean>
 
     <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/ftl/"/>

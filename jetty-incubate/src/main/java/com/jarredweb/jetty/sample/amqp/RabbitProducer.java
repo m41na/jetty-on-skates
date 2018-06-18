@@ -1,6 +1,6 @@
 package com.jarredweb.jetty.sample.amqp;
 
-import com.jarredweb.webjar.tasklet.AbstractTasklet;
+import com.jarredweb.zesty.tasklet.AbstractTasklet;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

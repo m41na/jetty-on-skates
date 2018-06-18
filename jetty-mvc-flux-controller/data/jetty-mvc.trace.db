@@ -1,0 +1,14 @@
+2018-05-12 15:45:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_USERS" not found; SQL statement:
+select * from tbl_users limit 10 offset 0 [42102-196]
+2018-05-12 15:48:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_USERS" not found; SQL statement:
+select * from tbl_users limit 10 offset 0 [42102-196]
+2018-05-12 15:49:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TBL_USERS" not found; SQL statement:
+select * from tbl_users limit 10 offset 0 [42102-196]
+2018-05-12 16:06:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SHOW TABLES([*])
+ "; SQL statement:
+show tables()
+ [42000-197]

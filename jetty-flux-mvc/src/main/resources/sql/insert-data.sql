@@ -1,0 +1,9 @@
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (1, 'Bread', 'doughy heaven', 'bread.jpg', 3.20);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (2, 'Milk', 'dairy product', 'milk.jpg', 5.20);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (3, 'Honey', 'nectary spectacle', 'honry.jpg', 13.20);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (4, 'Jam', 'fruity burst', 'jam.jpg', 7.20);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (5, 'shirt', 'big shirt', 'shirt.jpg', 20.99);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (6, 'shorts', 'big shorts', 'shorts.jpg', 30.99);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (7, 'pants', 'big pants', 'pants.jpg', 40.99);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (8, 'shoes', 'big shoes', 'shoes.jpg', 80.99);
+merge into tbl_product (item_id, item_name, item_descr, item_img, item_price) key (item_id) values (9, 'jacket', 'big jacket', 'jacket.jpg', 120.99);

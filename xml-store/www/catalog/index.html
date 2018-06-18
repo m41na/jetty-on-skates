@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en_us">
+
+<head>
+    <title>Markup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="rich-text-editor.css" />
+    <style type="text/css">
+        #newcontent {
+            width: 550px;
+            min-height: 200px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"></div>
+
+    <p>
+        <button type="button" onclick="sendXMLData('/catalog/')">Send</button>
+    </p>
+
+    <hr/>
+
+    <div id="editor">
+        <form>
+            <select name="section">
+                <option value="">select reqion to update</option>
+            </select>
+            <br/>
+            <textarea name="newcontent" id="newcontent" class="rich-text-editor"></textarea>
+            <br/>
+            <input type="submit" value="Send Content" />
+            <br/>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="he.js"></script>
+    <script type="text/javascript" src="rich-text-editor.js"></script>
+    <script type="text/javascript" src="catalog.js"></script>
+</body>
+
+</html>

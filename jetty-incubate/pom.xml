@@ -132,11 +132,11 @@
             <version>5.1.2</version>
         </dependency>
         
-        <!-- webjar tasks -->
+        <!-- zesty tasks -->
         <dependency>
             <groupId>com.jarredweb.works</groupId>
-            <artifactId>webjar-tasklet</artifactId>
-            <version>0.4.1-beta</version>
+            <artifactId>zesty-tasklet</artifactId>
+            <version>0.5.0-beta</version>
         </dependency>
         
         <!-- junit testing -->

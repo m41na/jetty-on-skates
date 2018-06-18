@@ -11,8 +11,8 @@
         <!-- web framework -->
         <dependency>
             <groupId>com.jarredweb.works</groupId>
-            <artifactId>webjar-http</artifactId>
-            <version>0.4.1-beta</version>
+            <artifactId>zesty-http</artifactId>
+            <version>0.5.0-beta</version>
         </dependency>
         
         <dependency>
@@ -26,6 +26,12 @@
             <groupId>org.basex</groupId>
             <artifactId>basex-api</artifactId>
             <version>9.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         
         <!-- xsl dependency -->
@@ -34,6 +40,12 @@
             <artifactId>xalan</artifactId>
             <version>2.7.2</version>
             <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.coveo</groupId>
+            <artifactId>nashorn-commonjs-modules</artifactId>
+            <version>1.0.9</version>
         </dependency>
         
         <!-- junit testing -->
