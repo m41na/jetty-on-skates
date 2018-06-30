@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Health Check</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form method="post" action="/health/post" enctype="multipart/form-data" >
+            File:
+            <input type="file" name="page" id="file" onchange="fileSelected()" /> <br/>
+            <div id="file_name"></div>
+            <div id="file_size"></div>
+            <div id="file_type"></div>
+            <input type="submit" value="Upload" name="upload" id="upload" /><br/>
+        </form>
+        
+        <script type="text/javascript">
+            function fileSelected(){
+                var file = document.getElementById("file").files[0];
+                if(file){
+                    var size = 0;
+                    if(file.size > 1024 * 1024){
+                        size = (Math.round(file.size * 100 / (1024 * 1024) / 100)).toString() + 'MB';
+                    }
+                    else{
+                        size = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+                    }
+                    
+                    document.getElementById('file_name').innerHTML = 'Name: ' + file.name;
+                    document.getElementById('file_size').innerHTML = 'Size: ' + size;
+                    document.getElementById('file_type').innerHTML = 'Type: ' + file.type;
+                }
+            }
+        </script>
+    </body>
+</html>

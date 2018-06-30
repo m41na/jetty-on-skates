@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Basic Chat</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .incoming{
+                background-color: #adf;
+            }
+            .outgoing{
+                background-color: #fda;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <input name="sender" placeholder="from"/><input name="sendto" placeholder="to"/><br/>
+            <button name="start" onclick="startSession()">Start</button>
+            <button name="end" onclick="endSession()">End</button>
+            <br/>
+            <textarea name="message"></textarea>
+            <button name="send" onclick="sendContent()">Send</button>
+            <br/>
+            <div id="content"></div>
+        </div>
+        <script src="index.js"></script>
+    </body>
+</html>

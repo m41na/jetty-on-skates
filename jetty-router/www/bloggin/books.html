@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Books Catalog</title>
+
+<!-- Bootstrap core CSS -->
+<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+<!-- Summernote -->
+<link href="assets/vendor/summernote/summernote.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="assets/css/blog-post.css" rel="stylesheet">
+
+<head>
+
+    <body>
+        <h2 class="header">Books Catalog</h2>
+        <div id="books-list"></div>
+
+        <hr/>
+        <p>
+            <button type="button" onclick="sendXMLData('/basex/books', 'book')">Send</button>
+        </p>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="assets/vendor/jquery/jquery.min.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Summernote -->
+        <script src="assets/vendor/summernote/summernote.js"></script>
+        <script src="he.js"></script>
+        <script src="books.js"></script>
+        <!--
+        <script src="assets/js/editor.js"></script>
+        <script>
+            $(document).ready(function() {
+                //define an API for external calls
+                let AjaxApi = {
+                    fetchLocal: function(config) {
+                        $.ajax({
+                            url: 'books.xml',
+                            type: 'get',
+                            dataType: 'xml',
+                            success: config.success,
+                            error: config.error
+                        });
+                    },
+                    fetchXML: function(config) {
+                        $.ajax({
+                            url: 'http://localhost:3010/ws/basex/books',
+                            type: 'get',
+                            dataType: 'xml',
+                            success: config.success,
+                            error: config.error
+                        });
+                    },
+                    sendXML: function(config) {
+                        $.ajax({
+                            url: 'http://localhost:3010/ws/basex/books',
+                            type: 'post',
+                            dataType: 'xml',
+                            contentType: 'application/xml',
+                            data: config.xml,
+                            success: config.success,
+                            error: config.error
+                        });
+                    }
+                }
+
+                //declare methods/callbacks
+                let onSync = (markup) => {
+
+                    let onSyncOk = (data) => {
+                        console.log(data);
+                    }
+
+                    let onSyncFail = (xhr) => {
+                        console.log(xhr.responseText);
+                    }
+
+                    AjaxApi.sendXML({
+                        xml: markup,
+                        success: onSyncOk,
+                        error: onSyncFail
+                    })
+
+                }
+
+                let onClose = (markup) => {
+                    console.log(markup);
+                }
+
+                let onStartupOk = (data) => {
+                    //instantiate book object
+                    let Books = new PageDoc({
+                        appname: 'bookstore',
+                        content: '#books-list',
+                        source: data,
+                        basetag: 'catalog',
+                        element: 'book'
+                    });
+
+                    //attach 'close' listener
+                    Books.listener('close', onClose);
+
+                    //attach 'sync' listener
+                    Books.listener('sync', onSync);
+                }
+
+                let onStartupFail = (xhr) => {
+                    console.log(xhr.responseText);
+                }
+
+                //initialize the app
+                AjaxApi.fetchLocal({
+                    success: onStartupOk,
+                    error: onStartupFail
+                });
+            });
+        </script>
+         -->
+    </body>
+
+</html>

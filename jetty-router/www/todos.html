@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ToDo List</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" href="css/todos.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div id="myDIV" class="header">
+                <h2>My To Do List</h2>
+                <form id="tasks_form">
+                    <input type="text" name="task" placeholder="Title...">
+                    <span onclick="createTask()" class="addBtn">Add</span>
+                </form>
+            </div>
+
+            <ul id="myUL">
+                {% for task in tasks %}
+                <li data-name="${ task.name }" {% if task.completed %}class="checked"{% endif %}">${ task.name }</li>
+                {% endfor %}
+            </ul> 
+        </div>
+
+        <script type="text/javascript" src="js/todos.js"></script>
+    </body>
+</html>

@@ -163,7 +163,6 @@
     </build>
     <name>jetty-playground</name>
     <modules>
-        <module>xml-store</module>
         <module>jetty-incubate</module>
         <module>jetty-router</module>
         <module>jetty-mvc-classic</module>
