@@ -1,37 +1,34 @@
 package com.jarredweb.jesty.wsock2;
 
 import java.net.URI;
-import javax.websocket.ContainerProvider;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
-import org.eclipse.jetty.util.component.LifeCycle;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 public class EventClient {
 
     public static void main(String[] args) {
-        URI uri = URI.create("ws://localhost:8080/events/");
 
+        WebSocketClient client = new WebSocketClient();
+
+        EventSocket socket = new EventSocket();
         try {
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            client.start();
 
-            try {
-                // Attempt Connect
-                Session session = container.connectToServer(EventSocket.class, uri);
-                // Send a message
-                session.getBasicRemote().sendText("Hello");
-                // Close session
-                session.close();
-            } finally {
-                // Force lifecycle stop when done with container.
-                // This is to free up threads and resources that the
-                // JSR-356 container allocates. But unfortunately
-                // the JSR-356 spec does not handle lifecycles (yet)
-                if (container instanceof LifeCycle) {
-                    ((LifeCycle) container).stop();
-                }
-            }
-        } catch (Throwable t) {
+            URI uri = URI.create("ws://localhost:8080/events");
+            URI echoUri = new URI(uri.toString());
+            ClientUpgradeRequest request = new ClientUpgradeRequest();
+            client.connect(socket, echoUri, request);
+            System.out.printf("Connecting to : %s%n", echoUri);
+
+            Thread.sleep(4000);
+        } catch (Exception t) {
             t.printStackTrace(System.err);
+        } finally {
+            try {
+                client.stop();
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
         }
     }
 }

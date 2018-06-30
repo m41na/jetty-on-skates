@@ -1,4 +1,4 @@
-package com.jarredweb.jesty.wsock2;
+package com.jarredweb.jesty.extras;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -6,7 +6,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class EventServer {
+public class AppWsServer {
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -27,7 +27,7 @@ public class EventServer {
         context.addServlet(defHolder,"/");
 
         // Add a websocket to a specific path spec
-        ServletHolder holderEvents = new ServletHolder("ws-events", EventServlet.class);
+        ServletHolder holderEvents = new ServletHolder("ws-events", new AppWsServlet(AppWsEvents::new));
         context.addServlet(holderEvents, "/events/*");
 
         try {

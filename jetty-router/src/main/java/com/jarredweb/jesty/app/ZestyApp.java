@@ -1,6 +1,7 @@
 package com.jarredweb.jesty.app;
 
 import com.google.common.collect.Maps;
+import com.jarredweb.jesty.extras.AppWsEvents;
 import com.jarredweb.jesty.servlet.HandlerRequest;
 import com.jarredweb.jesty.servlet.HandlerResponse;
 import com.jarredweb.jesty.servlet.HandlerServlet;
@@ -200,6 +201,8 @@ public class ZestyApp {
                             response.send("no content");
                         }
                     }
-                }).listen(port, host);
+                })
+                .websocket("/events/*", AppWsEvents::new)
+                .listen(port, host);
     }
 }

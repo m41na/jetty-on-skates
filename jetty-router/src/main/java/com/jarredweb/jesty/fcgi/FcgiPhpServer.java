@@ -1,12 +1,17 @@
-package com.jarredweb.jesty.wsock2;
+package com.jarredweb.jesty.fcgi;
 
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import org.eclipse.jetty.fcgi.server.proxy.FastCGIProxyServlet;
+import org.eclipse.jetty.fcgi.server.proxy.TryFilesFilter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class EventServer {
+public class FcgiPhpServer {
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -18,17 +23,27 @@ public class EventServer {
         // This is also known as the handler tree (in jetty speak)
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        context.setResourceBase("/var/www/wordpress");
+        context.setWelcomeFiles(new String[]{"index.php"});
         server.setHandler(context);
+        
+        //add try filter
+        FilterHolder tryHolder = new FilterHolder(new TryFilesFilter());
+        tryHolder.setInitParameter("files", "$path /index.php?p=$path");
+        context.addFilter(tryHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
         
         //Add default servlet (to serve the html/css/js)
         ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
-        defHolder.setInitParameter("resourceBase","www/wsock2");
-        defHolder.setInitParameter("dirAllowed","true");
+        defHolder.setInitParameter("dirAllowed","false");
         context.addServlet(defHolder,"/");
-
-        // Add a websocket to a specific path spec
-        ServletHolder holderEvents = new ServletHolder("ws-events", EventServlet.class);
-        context.addServlet(holderEvents, "/events/*");
+        
+        //add fcgi servlet
+        ServletHolder fgciHolder = new ServletHolder("fcgi",new FastCGIProxyServlet());
+        fgciHolder.setInitParameter("proxyTo","http://localhost:9000");
+        fgciHolder.setInitParameter("prefix","/");
+        fgciHolder.setInitParameter("scriptRoot","/var/www/wordpress");
+        fgciHolder.setInitParameter("scriptPattern","(.+?\\\\.php)");
+        context.addServlet(fgciHolder,"*.php");
 
         try {
             server.start();

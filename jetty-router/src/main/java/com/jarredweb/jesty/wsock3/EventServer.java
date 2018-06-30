@@ -1,10 +1,12 @@
-package com.jarredweb.jesty.wsock2;
+package com.jarredweb.jesty.wsock3;
 
+import javax.websocket.server.ServerContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
 public class EventServer {
 
@@ -18,7 +20,7 @@ public class EventServer {
         // This is also known as the handler tree (in jetty speak)
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        server.setHandler(context);
+        server.setHandler(context);        
         
         //Add default servlet (to serve the html/css/js)
         ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
@@ -26,11 +28,13 @@ public class EventServer {
         defHolder.setInitParameter("dirAllowed","true");
         context.addServlet(defHolder,"/");
 
-        // Add a websocket to a specific path spec
-        ServletHolder holderEvents = new ServletHolder("ws-events", EventServlet.class);
-        context.addServlet(holderEvents, "/events/*");
-
         try {
+            // Initialize javax.websocket layer
+            ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(context);
+
+            // Add WebSocket endpoint to javax.websocket layer
+            wscontainer.addEndpoint(EventSocket.class);
+
             server.start();
             server.dump(System.err);
             server.join();

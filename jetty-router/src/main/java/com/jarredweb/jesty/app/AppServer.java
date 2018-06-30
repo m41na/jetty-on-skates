@@ -1,5 +1,7 @@
 package com.jarredweb.jesty.app;
 
+import com.jarredweb.jesty.extras.AppWsProvider;
+import com.jarredweb.jesty.extras.AppWsServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -315,10 +317,11 @@ public class AppServer {
         return this;
     }
 
-    private AppServer websocket(String ctx) {
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath(ctx.startsWith("/") ? ctx : "/" + ctx);
-        server.setHandler(context);
+    public AppServer websocket(String ctx, AppWsProvider provider) {        
+        // Add a websocket to a specific path spec
+        ServletHolder holderEvents = new ServletHolder("ws-events", new AppWsServlet(provider));
+        servlets.addServlet(holderEvents, ctx);
+        return this;
     }
 
     //************* START *****************//
