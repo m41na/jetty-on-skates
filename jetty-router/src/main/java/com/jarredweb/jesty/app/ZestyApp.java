@@ -29,9 +29,12 @@ public class ZestyApp {
         //start server
         int port = 8080;
         String host = "localhost";
+        String root = "/app";
+        String assets = "www";
 
         AppServer app = new AppServer();
-        app.assets("www");
+        app.root(root);
+        app.assets(assets);
 
         app.router()
                 .get("/check", new HandlerServlet() {
@@ -70,7 +73,7 @@ public class ZestyApp {
                 .get("/pong", new HandlerServlet() {
                     @Override
                     public void handle(HandlerRequest request, HandlerResponse response) {
-                        response.redirect("/wowza");
+                        response.redirect(app.resolve("/wowza"));
                     }
                 })
                 .get("/zesty", new HandlerServlet() {
@@ -90,7 +93,7 @@ public class ZestyApp {
                     public void handle(HandlerRequest request, HandlerResponse response) {
                         String dest = request.getParameter("destination");
                         request.upload(dest);
-                        response.redirect("/upload");
+                        response.redirect(app.resolve("/upload"));
                     }
                 })
                 .get("/todos", new HandlerServlet() {
@@ -157,7 +160,7 @@ public class ZestyApp {
                         String task = request.getParameter("name");
                         todos.deleteTask(task);
 
-                        response.redirect("/todos/refresh");
+                        response.redirect(app.resolve("/todos/refresh"));
                     }
                 })
                 .get("/basex/:source", new HandlerServlet() {
@@ -203,7 +206,7 @@ public class ZestyApp {
                     }
                 })
                 .websocket("/events/*", AppWsEvents::new)
-                //.wordpress("/var/www/wordpress", "http://localhost:9000")
+                .wordpress("/var/www/wordpress", "http://localhost:9000")
                 .listen(port, host);
     }
 }

@@ -2,10 +2,10 @@ let form  = document.getElementById("tasks_form");
 
 //create new task
 var createTask = function(){  
-    let value = form.querySelector("input[name=task]").value
+    let value = form.querySelector("input[name=task]").value;
     if(value){
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", '/todos', true);
+        xhr.open("POST", '/app/todos', true);
 
         //Send the proper header information along with the request
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -16,7 +16,7 @@ var createTask = function(){
                 var task = JSON.parse(xhr.response);
                 newElement(task);
             }
-        }
+        };
         xhr.send("task="+value); 
     }
     else{
@@ -26,20 +26,20 @@ var createTask = function(){
 
 var retrieveTasks = function(){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/todos/refresh', true);
+    xhr.open('GET', '/app/todos/refresh', true);
 
     xhr.onload = function () {
       // Request finished. Do processing here.
     };
 
     xhr.send(null);
-}
+};
 
 var updateName = function(onSuccess){
-    let value = form.querySelector("input[name=task]").value
+    let value = form.querySelector("input[name=task]").value;
 
     var xhr = new XMLHttpRequest();
-    xhr.open("PUT", '/todos/name', true);
+    xhr.open("PUT", '/app/todos/name', true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -49,13 +49,13 @@ var updateName = function(onSuccess){
             var task = JSON.parse(xhr.response);
             onSuccess(task);
         }
-    }
+    };
     xhr.send(JSON.stringify("task="+value)); 
 };
 
 var updateDone = function(task, complete, onSuccess){
     var xhr = new XMLHttpRequest();
-    xhr.open("PUT", '/todos/done', true);
+    xhr.open("PUT", '/app/todos/done', true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -65,13 +65,13 @@ var updateDone = function(task, complete, onSuccess){
             var task = JSON.parse(xhr.response);
             onSuccess(task);
         }
-    }
+    };
     xhr.send("task="+task+"&complete="+complete); 
 };
 
 var deleteTask = function(name, onSuccess){
     var xhr = new XMLHttpRequest();
-    xhr.open("DELETE", '/todos?name=' + name, true);
+    xhr.open("DELETE", '/app/todos?name=' + name, true);
 
     xhr.onload = function () {
       // Request finished. Do processing here.
@@ -113,7 +113,7 @@ function newElement(task) {
         deleteTask(item.dataset.name, ()=>{
             item.remove();
         });
-    }
+    };
 };
 
 //on page load, initialize elements
@@ -136,6 +136,6 @@ function newElement(task) {
             deleteTask(task.dataset.name, ()=>{
                 task.remove();
             });
-        }
+        };
     }
 })();

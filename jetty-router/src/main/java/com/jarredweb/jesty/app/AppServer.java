@@ -47,6 +47,7 @@ public class AppServer {
     private Server server;
     private AppRoutes routes;
     private String status = "stopped";
+    private String root = "/";
     private String assets = "www";
     private final Map<String, String> wpcontext = new HashMap<>();
     private final Map<String, Object> locals = new HashMap<>();
@@ -61,9 +62,22 @@ public class AppServer {
     public void use(String name, ScriptObjectMirror component) {
         this.context.put(name, component);
     }
+    
+    public void root(String path){
+        this.root = path;
+    }
 
     public void assets(String path) {
         this.assets = path;
+    }
+    
+    public String resolve(String path){
+        String path1 = !root.startsWith("/")? "/" + root : root;
+        if(path1.endsWith("/")) {
+            path1 = path1.substring(0, path1.length() - 2);
+        }
+        String path2 = !path.startsWith("/")? "/" + path : path;
+        return path1 + path2;
     }
 
     public Set<String> locals() {
@@ -128,7 +142,7 @@ public class AppServer {
     }
 
     public AppServer head(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "head", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "head", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -151,7 +165,7 @@ public class AppServer {
     }
 
     public AppServer trace(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "trace", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "trace", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -174,7 +188,7 @@ public class AppServer {
     }
 
     public AppServer options(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "options", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "options", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -201,7 +215,7 @@ public class AppServer {
     }
 
     public AppServer get(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "get", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "get", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -228,7 +242,7 @@ public class AppServer {
     }
 
     public AppServer post(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "post", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "post", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -261,7 +275,7 @@ public class AppServer {
     }
 
     public AppServer put(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "put", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "put", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -288,7 +302,7 @@ public class AppServer {
     }
 
     public AppServer delete(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "delete", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "delete", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -315,7 +329,7 @@ public class AppServer {
     }
 
     public AppServer all(String path, String accepts, String type, HandlerServlet handler) {
-        AppRoute route = new AppRoute(path, "*", accepts, type);
+        AppRoute route = new AppRoute(resolve(path), "*", accepts, type);
         route.setId();
         routes.addRoute(route);
         //add servlet handler
@@ -324,15 +338,15 @@ public class AppServer {
     }
 
     //************* WEBSOCKETS *****************//   
-    public AppServer websocket(String ctx, AppWsProvider provider) {        
+    public AppServer websocket(String ctx, AppWsProvider provider) {
         // Add a websocket to a specific path spec
         ServletHolder holderEvents = new ServletHolder("ws-events", new AppWsServlet(provider));
         servlets.addServlet(holderEvents, ctx);
         return this;
     }
-    
+
     //************* WORDPRESS *****************//   
-    public AppServer wordpress(String home, String fcgi_proxy){
+    public AppServer wordpress(String home, String fcgi_proxy) {
         this.wpcontext.put("activate", "true");
         this.wpcontext.put("resource_base", home);
         this.wpcontext.put("welcome_file", "index.php");
@@ -367,46 +381,46 @@ public class AppServer {
             
             //create ordered list of handlers for the server
             List<Handler> serverHandlers = new LinkedList<>();
-            
-            //add activated contexts (say, php with fgci)
-            if(Boolean.valueOf(this.wpcontext.get("activate"))){
-                serverHandlers.add(create_fcgi_php(this.wpcontext));
-            }
 
             //create a resource handler
-            ResourceHandler resource_handler = new ResourceHandler();
-            resource_handler.setDirectoriesListed(true);
-            resource_handler.setWelcomeFiles(new String[]{"index.html"});
-            resource_handler.setResourceBase(assets);
+            ResourceHandler resHandler = new ResourceHandler();
+            resHandler.setDirectoriesListed(true);
+            resHandler.setWelcomeFiles(new String[]{"index.html"});
+            resHandler.setResourceBase(assets);
             
             //add resources handler
-            serverHandlers.add(resource_handler);
+            serverHandlers.add(resHandler);
             
             //add servlet handler
-            servlets.setContextPath("/");
+            servlets.setContextPath(root);
             servlets.addFilter(new FilterHolder(new ReRouteFilter(this.routes)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
             //create health servlet
             HealthServlet health = new HealthServlet();
 
             //add health servlet GET routes
-            AppRoute healthGet = new AppRoute("/health", "get", "", "text/html");
+            AppRoute healthGet = new AppRoute(resolve("/health"), "get", "", "text/html");
             healthGet.setId();
             routes.addRoute(healthGet);
             servlets.addServlet(new ServletHolder(health), healthGet.pathId);
 
             //add health servlet POST routes
-            AppRoute healthPost = new AppRoute("/health/post", "post", "", "multipart/form-data");
+            AppRoute healthPost = new AppRoute(resolve("/health/post"), "post", "", "multipart/form-data");
             healthPost.setId();
             routes.addRoute(healthPost);
             servlets.addServlet(new ServletHolder(health), healthPost.pathId);
-            
+
             //add servlets context
             serverHandlers.add(this.servlets);
-            
+
             //add default handler
             serverHandlers.add(new DefaultHandler());
 
+            //add activated contexts (say, php with fgci)
+            if (Boolean.valueOf(this.wpcontext.get("activate"))) {
+                serverHandlers.add(create_fcgi_php(this.wpcontext));
+            }
+            
             //add handlers to the server            
             HandlerList handlers = new HandlerList();
             handlers.setHandlers(serverHandlers.toArray(new Handler[serverHandlers.size()]));
@@ -435,24 +449,24 @@ public class AppServer {
         php_ctx.setContextPath("/");
         php_ctx.setResourceBase(phpctx.get("resource_base"));
         php_ctx.setWelcomeFiles(new String[]{phpctx.get("welcome_file")});
-        
+
         //add try filter
         FilterHolder tryHolder = new FilterHolder(new TryFilesFilter());
         tryHolder.setInitParameter("files", "$path /index.php?p=$path");
         php_ctx.addFilter(tryHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
-        
+
         //Add default servlet (to serve the html/css/js)
-        ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
-        defHolder.setInitParameter("dirAllowed","false");
+        ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
+        defHolder.setInitParameter("dirAllowed", "false");
         php_ctx.addServlet(defHolder, "/");
-        
+
         //add fcgi servlet for php scripts
-        ServletHolder fgciHolder = new ServletHolder("fcgi",new FastCGIProxyServlet());
+        ServletHolder fgciHolder = new ServletHolder("fcgi", new FastCGIProxyServlet());
         fgciHolder.setInitParameter("proxyTo", phpctx.get("fcgi_proxy"));
         fgciHolder.setInitParameter("prefix", "/");
         fgciHolder.setInitParameter("scriptRoot", phpctx.get("script_root"));
-        fgciHolder.setInitParameter("scriptPattern","(.+?\\\\.php)");
-        php_ctx.addServlet(fgciHolder,"*.php");
+        fgciHolder.setInitParameter("scriptPattern", "(.+?\\\\.php)");
+        php_ctx.addServlet(fgciHolder, "*.php");
         return php_ctx;
     }
 

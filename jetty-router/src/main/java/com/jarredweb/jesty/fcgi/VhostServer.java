@@ -1,7 +1,6 @@
 package com.jarredweb.jesty.fcgi;
 
 import com.jarredweb.jesty.servlet.HelloServlet;
-import com.jarredweb.jesty.wsock.EventServlet;
 import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import org.eclipse.jetty.fcgi.server.proxy.FastCGIProxyServlet;
@@ -9,9 +8,7 @@ import org.eclipse.jetty.fcgi.server.proxy.TryFilesFilter;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
