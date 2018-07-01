@@ -203,6 +203,7 @@ public class ZestyApp {
                     }
                 })
                 .websocket("/events/*", AppWsEvents::new)
+                //.wordpress("/var/www/wordpress", "http://localhost:9000")
                 .listen(port, host);
     }
 }

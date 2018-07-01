@@ -6,8 +6,9 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlets.CGI;
 
-public class FcgiPyServer {
+public class CgiPyServer {
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -29,12 +30,14 @@ public class FcgiPyServer {
         context.addServlet(defHolder,"/");
         
         //add fcgi servlet
-        ServletHolder fgciHolder = new ServletHolder("fcgi",new FastCGIProxyServlet());
-        fgciHolder.setInitParameter("proxyTo","http://localhost:9000");
-        fgciHolder.setInitParameter("prefix","/");
-        fgciHolder.setInitParameter("scriptRoot","/var/www/pypress/cgi-bin");
-        fgciHolder.setInitParameter("scriptPattern","(.+?\\\\.py)");
-        context.addServlet(fgciHolder,"/cgi-bin/*");
+        ServletHolder cgiHolder = new ServletHolder("cgi",new CGI());
+        cgiHolder.setInitParameter("path","/bin:/usr/bin:/usr/local/bin");
+        cgiHolder.setInitParameter("cgibinResourceBaseIsRelative","true");
+        cgiHolder.setInitParameter("commandPrefix","/usr/bin/python");
+        cgiHolder.setInitParameter("cgibinResourceBase","/cgi-bin");
+        cgiHolder.setInitOrder(1);
+        cgiHolder.setAsyncSupported(true);
+        context.addServlet(cgiHolder,"/cgi-bin/*");
 
         try {
             server.start();

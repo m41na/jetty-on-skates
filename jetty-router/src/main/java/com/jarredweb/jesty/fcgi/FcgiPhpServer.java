@@ -37,7 +37,7 @@ public class FcgiPhpServer {
         defHolder.setInitParameter("dirAllowed","false");
         context.addServlet(defHolder,"/");
         
-        //add fcgi servlet
+        //add fcgi servlet for php scripts
         ServletHolder fgciHolder = new ServletHolder("fcgi",new FastCGIProxyServlet());
         fgciHolder.setInitParameter("proxyTo","http://localhost:9000");
         fgciHolder.setInitParameter("prefix","/");

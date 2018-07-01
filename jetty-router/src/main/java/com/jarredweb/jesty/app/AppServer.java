@@ -18,6 +18,8 @@ import com.jarredweb.jesty.servlet.HealthServlet;
 import com.jarredweb.jesty.servlet.ReRouteFilter;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.DispatcherType;
@@ -25,9 +27,12 @@ import javax.servlet.MultipartConfigElement;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.runtime.ScriptFunction;
+import org.eclipse.jetty.fcgi.server.proxy.FastCGIProxyServlet;
+import org.eclipse.jetty.fcgi.server.proxy.TryFilesFilter;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -43,6 +48,7 @@ public class AppServer {
     private AppRoutes routes;
     private String status = "stopped";
     private String assets = "www";
+    private final Map<String, String> wpcontext = new HashMap<>();
     private final Map<String, Object> locals = new HashMap<>();
     private final Map<String, ScriptObjectMirror> context = new HashMap<>();
     private final LifecycleSubscriber lifecycle = new LifecycleSubscriber();
@@ -317,10 +323,21 @@ public class AppServer {
         return this;
     }
 
+    //************* WEBSOCKETS *****************//   
     public AppServer websocket(String ctx, AppWsProvider provider) {        
         // Add a websocket to a specific path spec
         ServletHolder holderEvents = new ServletHolder("ws-events", new AppWsServlet(provider));
         servlets.addServlet(holderEvents, ctx);
+        return this;
+    }
+    
+    //************* WORDPRESS *****************//   
+    public AppServer wordpress(String home, String fcgi_proxy){
+        this.wpcontext.put("activate", "true");
+        this.wpcontext.put("resource_base", home);
+        this.wpcontext.put("welcome_file", "index.php");
+        this.wpcontext.put("fcgi_proxy", fcgi_proxy);
+        this.wpcontext.put("script_root", home);
         return this;
     }
 
@@ -347,6 +364,24 @@ public class AppServer {
             server.addConnector(http);
 
             //TODO: configure secure connector
+            
+            //create ordered list of handlers for the server
+            List<Handler> serverHandlers = new LinkedList<>();
+            
+            //add activated contexts (say, php with fgci)
+            if(Boolean.valueOf(this.wpcontext.get("activate"))){
+                serverHandlers.add(create_fcgi_php(this.wpcontext));
+            }
+
+            //create a resource handler
+            ResourceHandler resource_handler = new ResourceHandler();
+            resource_handler.setDirectoriesListed(true);
+            resource_handler.setWelcomeFiles(new String[]{"index.html"});
+            resource_handler.setResourceBase(assets);
+            
+            //add resources handler
+            serverHandlers.add(resource_handler);
+            
             //add servlet handler
             servlets.setContextPath("/");
             servlets.addFilter(new FilterHolder(new ReRouteFilter(this.routes)), "/*", EnumSet.of(DispatcherType.REQUEST));
@@ -365,16 +400,16 @@ public class AppServer {
             healthPost.setId();
             routes.addRoute(healthPost);
             servlets.addServlet(new ServletHolder(health), healthPost.pathId);
+            
+            //add servlets context
+            serverHandlers.add(this.servlets);
+            
+            //add default handler
+            serverHandlers.add(new DefaultHandler());
 
-            //create a resource handler
-            ResourceHandler resource_handler = new ResourceHandler();
-            resource_handler.setDirectoriesListed(true);
-            resource_handler.setWelcomeFiles(new String[]{"index.html"});
-            resource_handler.setResourceBase(assets);
-
-            //add handlers to the server
+            //add handlers to the server            
             HandlerList handlers = new HandlerList();
-            handlers.setHandlers(new Handler[]{resource_handler, this.servlets, new DefaultHandler()});
+            handlers.setHandlers(serverHandlers.toArray(new Handler[serverHandlers.size()]));
             server.setHandler(handlers);
 
             //add shutdown hook
@@ -395,13 +430,30 @@ public class AppServer {
         }
     }
 
-    private ServletContextHandler configureDefaultServlet() {
-        ServletContextHandler defaultHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        defaultHandler.setContextPath("/");
-        defaultHandler.setResourceBase("www");
-        defaultHandler.setWelcomeFiles(new String[]{"index.html"});
-        defaultHandler.setInitParameter("dirAllowed", "false");
-        return defaultHandler;
+    private ServletContextHandler create_fcgi_php(Map<String, String> phpctx) {
+        ServletContextHandler php_ctx = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        php_ctx.setContextPath("/");
+        php_ctx.setResourceBase(phpctx.get("resource_base"));
+        php_ctx.setWelcomeFiles(new String[]{phpctx.get("welcome_file")});
+        
+        //add try filter
+        FilterHolder tryHolder = new FilterHolder(new TryFilesFilter());
+        tryHolder.setInitParameter("files", "$path /index.php?p=$path");
+        php_ctx.addFilter(tryHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
+        
+        //Add default servlet (to serve the html/css/js)
+        ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
+        defHolder.setInitParameter("dirAllowed","false");
+        php_ctx.addServlet(defHolder, "/");
+        
+        //add fcgi servlet for php scripts
+        ServletHolder fgciHolder = new ServletHolder("fcgi",new FastCGIProxyServlet());
+        fgciHolder.setInitParameter("proxyTo", phpctx.get("fcgi_proxy"));
+        fgciHolder.setInitParameter("prefix", "/");
+        fgciHolder.setInitParameter("scriptRoot", phpctx.get("script_root"));
+        fgciHolder.setInitParameter("scriptPattern","(.+?\\\\.php)");
+        php_ctx.addServlet(fgciHolder,"*.php");
+        return php_ctx;
     }
 
     private void addRuntimeShutdownHook(final Server server) {

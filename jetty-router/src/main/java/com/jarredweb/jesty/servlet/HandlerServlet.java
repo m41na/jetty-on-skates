@@ -96,6 +96,7 @@ public class HandlerServlet extends HttpServlet {
 
         if (response.redirect) {
             response.sendRedirect(response.routeUri);
+            async.complete();
             return;
         }
 
