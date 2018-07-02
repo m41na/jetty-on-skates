@@ -55,7 +55,7 @@ public class VhostServer {
         //Add default servlet (to serve the html/css/js)
         ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
         defHolder.setInitParameter("resourceBase", "www");
-        defHolder.setInitParameter("dirAllowed", "true");
+        defHolder.setInitParameter("dirAllowed", "false");
         altcontext.addServlet(defHolder, "/");
 
         // Add a websocket to a specific path spec

@@ -13,7 +13,7 @@ function startSession() {
         users.sendto = document.querySelector("input[name=sendto]").value;
 
         if (users.sender && users.sendto) {
-            ws = new WebSocket(`ws://localhost:8080/events/${users.sender}/to/${users.sendto}`);
+            ws = new WebSocket(`ws://localhost:8080/app/events/${users.sender}/to/${users.sendto}`);
 
             //add event handlers
             ws.onopen = function () {

@@ -18,8 +18,6 @@ import com.jarredweb.jesty.servlet.HealthServlet;
 import com.jarredweb.jesty.servlet.ReRouteFilter;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.DispatcherType;
@@ -30,8 +28,8 @@ import jdk.nashorn.internal.runtime.ScriptFunction;
 import org.eclipse.jetty.fcgi.server.proxy.FastCGIProxyServlet;
 import org.eclipse.jetty.fcgi.server.proxy.TryFilesFilter;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -62,21 +60,21 @@ public class AppServer {
     public void use(String name, ScriptObjectMirror component) {
         this.context.put(name, component);
     }
-    
-    public void root(String path){
+
+    public void root(String path) {
         this.root = path;
     }
 
     public void assets(String path) {
         this.assets = path;
     }
-    
-    public String resolve(String path){
-        String path1 = !root.startsWith("/")? "/" + root : root;
-        if(path1.endsWith("/")) {
-            path1 = path1.substring(0, path1.length() - 2);
+
+    public String resolve(String path) {
+        String path1 = !root.startsWith("/") ? "/" + root : root;
+        if (path1.endsWith("/")) {
+            path1 = path1.substring(0, path1.length() - 1);
         }
-        String path2 = !path.startsWith("/")? "/" + path : path;
+        String path2 = !path.startsWith("/") ? "/" + path : path;
         return path1 + path2;
     }
 
@@ -378,21 +376,18 @@ public class AppServer {
             server.addConnector(http);
 
             //TODO: configure secure connector
-            
-            //create ordered list of handlers for the server
-            List<Handler> serverHandlers = new LinkedList<>();
 
-            //create a resource handler
-            ResourceHandler resHandler = new ResourceHandler();
-            resHandler.setDirectoriesListed(true);
-            resHandler.setWelcomeFiles(new String[]{"index.html"});
-            resHandler.setResourceBase(assets);
-            
-            //add resources handler
-            serverHandlers.add(resHandler);
-            
-            //add servlet handler
+            //configure base context at path ${root}
             servlets.setContextPath(root);
+            servlets.setResourceBase(assets);
+            servlets.setWelcomeFiles(new String[]{"index.html"});
+
+            //configure resource handler for this context
+            ServletHolder resHolder = new ServletHolder("static-home", DefaultServlet.class);
+            resHolder.setInitParameter("resourceBase",assets);
+            resHolder.setInitParameter("dirAllowed", "false");
+            servlets.addServlet(resHolder, "/*");
+
             servlets.addFilter(new FilterHolder(new ReRouteFilter(this.routes)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
             //create health servlet
@@ -410,20 +405,19 @@ public class AppServer {
             routes.addRoute(healthPost);
             servlets.addServlet(new ServletHolder(health), healthPost.pathId);
 
-            //add servlets context
-            serverHandlers.add(this.servlets);
+            //collect all context handlers
+            ContextHandlerCollection contextHandlers = new ContextHandlerCollection();
+            contextHandlers.addHandler(servlets);
 
-            //add default handler
-            serverHandlers.add(new DefaultHandler());
-
-            //add activated contexts (say, php with fgci)
+            //add activated context handler (say, for php with fgci)
             if (Boolean.valueOf(this.wpcontext.get("activate"))) {
-                serverHandlers.add(create_fcgi_php(this.wpcontext));
+                contextHandlers.addHandler(create_fcgi_php(this.wpcontext));
             }
-            
+
             //add handlers to the server            
             HandlerList handlers = new HandlerList();
-            handlers.setHandlers(serverHandlers.toArray(new Handler[serverHandlers.size()]));
+            //handlers.setHandlers(serverHandlers.toArray(new Handler[serverHandlers.size()]));
+            handlers.setHandlers(new Handler[]{contextHandlers, new DefaultHandler()});
             server.setHandler(handlers);
 
             //add shutdown hook
