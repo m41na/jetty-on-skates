@@ -28,8 +28,10 @@ import jdk.nashorn.internal.runtime.ScriptFunction;
 import org.eclipse.jetty.fcgi.server.proxy.FastCGIProxyServlet;
 import org.eclipse.jetty.fcgi.server.proxy.TryFilesFilter;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -379,15 +381,6 @@ public class AppServer {
 
             //configure base context at path ${root}
             servlets.setContextPath(root);
-            servlets.setResourceBase(assets);
-            servlets.setWelcomeFiles(new String[]{"index.html"});
-
-            //configure resource handler for this context
-            ServletHolder resHolder = new ServletHolder("static-home", DefaultServlet.class);
-            resHolder.setInitParameter("resourceBase",assets);
-            resHolder.setInitParameter("dirAllowed", "false");
-            servlets.addServlet(resHolder, "/*");
-
             servlets.addFilter(new FilterHolder(new ReRouteFilter(this.routes)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
             //create health servlet
@@ -404,9 +397,18 @@ public class AppServer {
             healthPost.setId();
             routes.addRoute(healthPost);
             servlets.addServlet(new ServletHolder(health), healthPost.pathId);
+            
+            //configure resources handler for ${root} context
+            ContextHandler resHandler = new ContextHandler(root);
+            ResourceHandler resource_handler = new ResourceHandler();
+            resource_handler.setDirectoriesListed(false);
+            resource_handler.setWelcomeFiles(new String[]{"index.html"});
+            resource_handler.setResourceBase(assets);
+            resHandler.setHandler(resource_handler);
 
             //collect all context handlers
-            ContextHandlerCollection contextHandlers = new ContextHandlerCollection();
+            ContextHandlerCollection contextHandlers = new ContextHandlerCollection();            
+            contextHandlers.addHandler(resHandler);            
             contextHandlers.addHandler(servlets);
 
             //add activated context handler (say, for php with fgci)
