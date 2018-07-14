@@ -7,6 +7,7 @@ import com.jarredweb.jesty.servlet.HandlerResponse;
 import com.jarredweb.jesty.servlet.HandlerServlet;
 import com.jarredweb.jesty.todos.Task;
 import com.jarredweb.jesty.todos.TodosDao;
+import com.jarredweb.jesty.todos.TodosView;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,14 +30,22 @@ public class ZestyApp {
         //start server
         int port = 8080;
         String host = "localhost";
-        String root = "/app";
-        String assets = "www";
 
-        AppServer app = new AppServer();
-        app.root(root);
-        app.assets(assets);
+        Map<String, String> props = Maps.newHashMap();
+        props.put("appctx", "/app");
+        props.put("assets", "www");
+        props.put("themes", "www/themes");
+        props.put("engine", "jtwig");
+
+        AppServer app = new AppServer(props);
 
         app.router()
+                .get("/", new HandlerServlet() {
+                    @Override
+                    public void handle(HandlerRequest request, HandlerResponse response) {
+                        response.send(request.getRequestURI());
+                    }
+                })
                 .get("/check", new HandlerServlet() {
                     @Override
                     public void handle(HandlerRequest request, HandlerResponse response) {
@@ -94,6 +103,39 @@ public class ZestyApp {
                         String dest = request.getParameter("destination");
                         request.upload(dest);
                         response.redirect(app.resolve("/upload"));
+                    }
+                })
+                .get("/jobs", new HandlerServlet() {
+                    @Override
+                    public void handle(HandlerRequest request, HandlerResponse response) {
+                        TodosView view = new TodosView() {
+                            
+                            @Override
+                            public Map<String, Object> getModel() {
+                                List<Task> tasks = todos.retrieveByRange(0, 100);
+                                Map<String, Object> model = new HashMap<>();
+                                model.put("tasks", tasks);
+                                model.put("page", this);
+                                return model;
+                            }
+
+                            @Override
+                            public String getContent() {
+                                String markup = loadMarkup("todos.html");
+                                return mergeTemplate("todos-list", markup);
+                            }
+                        };
+                        response.setContentType(view.getContentType());
+                        response.send(view.getContent());
+                    }
+                })
+                .get("/tasks", new HandlerServlet() {
+                    @Override
+                    public void handle(HandlerRequest request, HandlerResponse response) {
+                        List<Task> tasks = todos.retrieveByRange(0, 100);
+                        Map<String, Object> model = new HashMap<>();
+                        model.put("tasks", tasks);
+                        response.render("todos", model);
                     }
                 })
                 .get("/todos", new HandlerServlet() {

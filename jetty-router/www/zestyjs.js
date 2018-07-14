@@ -4,7 +4,7 @@ function ping(){
 }
 
 function now(){
-    return new java.text.SimpleDateFormat("hh:mm:ss").format(new java.util.Date())
+    return new java.text.SimpleDateFormat("hh:mm:ssa").format(new java.util.Date())
 }
 
 function onSuccess(msg){
@@ -16,25 +16,33 @@ function onError(msg){
 };
 
 load('www/zjdbc.js');
+load('www/themes/basic/view/app-view.js');
 
 var todos = new dao.Zjdbc();
 todos.initDataSource();
 print('created todos DAO instance');
 
+var ViewException = Packages.com.jarredweb.jesty.view.ViewException;
+var FtlViewEngine = Packages.com.jarredweb.jesty.view.ftl.FtlViewEngine;
+var Template = Packages.freemarker.template.Template;
+
 var Date = Packages.java.util.Date;
-var Paths = Packages.java.nio.file.Paths;
+print(zesty.status().concat(" @ ").concat(now()));
 
-print(zesty.status().concat(" @ ").concat(new Date().toString()));
+var app = zesty.provide({
+    appctx: "/app",
+    assets: "www",
+    themes: "www/themes"
+});
 
-var www = Paths.get(__dirname, 'www');
+var router = app.router();
 
-zesty.assets(www);
-//zesty.use('view', 'jtwig');
-
-var router = zesty.router();
+router.get('/', function(req, res) {
+    res.send(app.status().concat(" @ ").concat(new Date().toString()));
+});
 
 router.get('/ping', function(req, res) {
-    res.send(zesty.status().concat(" @ ").concat(new Date().toString()));
+    res.redirect("/ping/server");
 });
 
 router.get('/ping/:name', function(req, res) {
@@ -51,7 +59,7 @@ router.get('/wowza', function (req, res) {
 });
 
 router.get('/zesty', function(req, res) {
-    res.download("www/zestyjs.js", null, null, function(){print('download done!')});
+    res.download("www/zestyjs.js", null, null, function(){print('download done!');});
 });
 
 router.get('/upload', function(req, res) {
@@ -62,6 +70,29 @@ router.post('/upload', '', 'multipart/form-data', function(req, res) {
     var dest = req.param('destination');
     req.upload(dest);
     res.redirect("/upload");
+});
+
+router.get("/jobs", function(req, res) {
+    todos.retrieveByRange(0, 100, function(tasks, msg){
+        var view = new appView.TodosView();
+        
+        view.getModel = function () {
+            var model = {"tasks": tasks, "page": view};
+            return model;
+        };
+        
+        view.getContent = function () {
+            try {
+                var markup = view.loadMarkup("tasks/todos.ftl");
+                return view.mergeTemplate("todos-list", markup);
+            } catch (error) {
+                error.printStackTrace(java.lang.System.err);
+                throw new ViewException("ZestyView.buildContent: ".concat(error));
+            }
+        };
+        res.setContentType("text/html;charset=utf-8");
+        res.send(view.getContent());
+    }, onError);
 });
 
 router.get("/todos", function(req, res) {
@@ -121,4 +152,6 @@ router.delete("/todos", function(req, res) {
     res.redirect("/todos/refresh");
 });
 
-router.listen(8080, 'localhost', function(){print('Zesty app listening on port 8080!')})
+router.wordpress("/var/www/wordpress", "http://localhost:9000");
+
+router.listen(8080, 'localhost', function(){print('Zesty app listening on port 8080!');});

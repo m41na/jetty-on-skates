@@ -16,9 +16,17 @@ import com.jarredweb.jesty.servlet.HandlerResponse;
 import com.jarredweb.jesty.servlet.HandlerServlet;
 import com.jarredweb.jesty.servlet.HealthServlet;
 import com.jarredweb.jesty.servlet.ReRouteFilter;
+import com.jarredweb.jesty.view.ViewEngine;
+import com.jarredweb.jesty.view.ViewException;
+import com.jarredweb.jesty.view.ftl.FtlViewEngine;
+import com.jarredweb.jesty.view.twig.TwigViewEngine;
+import java.io.File;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import javax.servlet.DispatcherType;
 import javax.servlet.MultipartConfigElement;
@@ -47,32 +55,62 @@ public class AppServer {
     private Server server;
     private AppRoutes routes;
     private String status = "stopped";
-    private String root = "/";
-    private String assets = "www";
+    private final Properties locals = new Properties();
     private final Map<String, String> wpcontext = new HashMap<>();
-    private final Map<String, Object> locals = new HashMap<>();
-    private final Map<String, ScriptObjectMirror> context = new HashMap<>();
     private final LifecycleSubscriber lifecycle = new LifecycleSubscriber();
     private final ServletContextHandler servlets = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    private static ViewEngine engine;
+
+    public AppServer() {
+        this(new HashMap<>());
+    }
+
+    public AppServer(Map<String, String> props) {
+        this.engine(Optional.ofNullable(props.get("engine")).orElse("jtwig"));
+        this.assets(Optional.ofNullable(props.get("assets")).orElse("www"));
+        this.appctx(Optional.ofNullable(props.get("appctx")).orElse("/"));
+    }
+
+    public static ViewEngine engine() {
+        if (engine == null) {
+            throw new RuntimeException("The engine is not yet initialized");
+        }
+        return engine;
+    }
 
     public String status() {
         return "server status is " + status;
     }
 
-    public void use(String name, ScriptObjectMirror component) {
-        this.context.put(name, component);
+    public final void appctx(String path) {
+        this.locals.put("appctx", path);
     }
 
-    public void root(String path) {
-        this.root = path;
+    public final void assets(String path) {
+        this.locals.put("assets", path);
     }
 
-    public void assets(String path) {
-        this.assets = path;
+    public final void engine(String view) {
+        try {
+            switch (view) {
+                case "jtwig":
+                    engine = TwigViewEngine.instance();
+                    break;
+                case "freemarker":
+                    engine = FtlViewEngine.instance();
+                    break;
+                default:
+                    throw new RuntimeException("specified engine not supported");
+            }
+            this.locals.put("engine", view);
+        } catch (IOException e) {
+            throw new RuntimeException("problem setting up view engine", e);
+        }
     }
 
     public String resolve(String path) {
-        String path1 = !root.startsWith("/") ? "/" + root : root;
+        String appctx = this.locals.getProperty("appctx");
+        String path1 = !appctx.startsWith("/") ? "/" + appctx : appctx;
         if (path1.endsWith("/")) {
             path1 = path1.substring(0, path1.length() - 1);
         }
@@ -81,7 +119,7 @@ public class AppServer {
     }
 
     public Set<String> locals() {
-        return locals.keySet();
+        return locals.stringPropertyNames();
     }
 
     public Object locals(String param) {
@@ -378,9 +416,9 @@ public class AppServer {
             server.addConnector(http);
 
             //TODO: configure secure connector
-
             //configure base context at path ${root}
-            servlets.setContextPath(root);
+            String appctx = this.locals.getProperty("appctx");
+            servlets.setContextPath(appctx);
             servlets.addFilter(new FilterHolder(new ReRouteFilter(this.routes)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
             //create health servlet
@@ -397,18 +435,18 @@ public class AppServer {
             healthPost.setId();
             routes.addRoute(healthPost);
             servlets.addServlet(new ServletHolder(health), healthPost.pathId);
-            
+
             //configure resources handler for ${root} context
-            ContextHandler resHandler = new ContextHandler(root);
+            ContextHandler resHandler = new ContextHandler(appctx);
             ResourceHandler resource_handler = new ResourceHandler();
             resource_handler.setDirectoriesListed(false);
             resource_handler.setWelcomeFiles(new String[]{"index.html"});
-            resource_handler.setResourceBase(assets);
+            resource_handler.setResourceBase(this.locals.getProperty("assets"));
             resHandler.setHandler(resource_handler);
 
             //collect all context handlers
-            ContextHandlerCollection contextHandlers = new ContextHandlerCollection();            
-            contextHandlers.addHandler(resHandler);            
+            ContextHandlerCollection contextHandlers = new ContextHandlerCollection();
+            contextHandlers.addHandler(resHandler);
             contextHandlers.addHandler(servlets);
 
             //add activated context handler (say, for php with fgci)

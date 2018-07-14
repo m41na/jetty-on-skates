@@ -1,0 +1,56 @@
+<template>
+    <div id="content">
+        <ul id="myUL">
+            {% for task in tasks %}
+            <li data-name="${ task.name }" {% if task.completed %}class="checked"{% endif %}">${ task.name }</li>
+            {% endfor %}
+        </ul> 
+    </div>
+</template>
+
+<script>
+load('www/zjdbc.js');
+load('www/themes/basic/view/app-view.js');
+
+var todos = new dao.Zjdbc();
+todos.initDataSource();
+print('created todos DAO instance');
+
+var view = appView.TodosView({
+    
+    this.getTitle = function () {
+        return "ToDo tasks";
+    };
+    
+    this.getMetaTags = function () {
+        return ["<link type=\"text/css\" href=\"/app/css/todos.css\" rel=\"stylesheet\">"];
+    };
+
+    this.getStyles = function () {
+        return ["<link type=\"text/css\" href=\"/app/css/todos.css\" rel=\"stylesheet\">"];
+    };
+
+    this.getScripts = function (top) {
+        return !top? [ "<script type=\"text/javascript\" src=\"/app/js/todos.js\"></script>"] : [];
+    };
+
+    this.getModel = function () {
+        var model = {"tasks": tasks, "page": view};
+        return model;
+    };
+
+    this.buildContent = function () {
+        try {
+            var markup = view.loadMarkup("tasks/todos.ftl");
+            return view.mergeTemplate("todos-list", markup);
+        } catch (error) {
+            error.printStackTrace(java.lang.System.err);
+            throw new ViewException("ZestyView.buildContent: ".concat(error));
+        }
+    };
+});
+</script>
+
+<style>
+
+</style>

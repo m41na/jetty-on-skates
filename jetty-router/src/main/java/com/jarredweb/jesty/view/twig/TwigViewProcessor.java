@@ -1,4 +1,4 @@
-package com.jarredweb.jesty.view;
+package com.jarredweb.jesty.view.twig;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -29,5 +29,10 @@ public class TwigViewProcessor implements ViewProcessor{
         ResourceReference resource = new ResourceReference(where.getType(), Paths.get("www/" + templatePath + ".html").toFile().getAbsolutePath());
         JtwigTemplate jtwigTemplate = new JtwigTemplate(factory.getEnvironment(), resource);
         return jtwigTemplate;
+    }
+
+    @Override
+    public String templateDir() {
+        return "www";
     }
 }

@@ -1,9 +1,9 @@
 package com.jarredweb.jesty.servlet;
 
 import com.google.gson.Gson;
+import com.jarredweb.jesty.app.AppServer;
 import com.jarredweb.jesty.route.BodyWriter;
 import com.jarredweb.jesty.route.RouteResponse;
-import com.jarredweb.jesty.view.ViewEngine;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +18,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.eclipse.jetty.http.HttpStatus;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
-import org.jtwig.resource.reference.ResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,8 +100,7 @@ public class HandlerResponse extends HttpServletResponseWrapper implements Route
     @Override
     public void render(String template, Map<String, Object> model) {
         try {
-            JtwigTemplate view = ViewEngine.getProcessor().resolve(template, ResourceReference.file(new File(".", "www")));
-            this.content = view.render(JtwigModel.newModel(model)).getBytes(StandardCharsets.UTF_8);
+            this.content = AppServer.engine().merge(template, model).getBytes(StandardCharsets.UTF_8);
             setContentLength(this.content.length);
         } catch (Exception e) {
             this.content = e.getMessage().getBytes(StandardCharsets.UTF_8);

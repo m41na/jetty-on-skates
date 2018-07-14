@@ -1,4 +1,4 @@
-package com.jarredweb.jesty.view;
+package com.jarredweb.jesty.view.twig;
 
 import org.jtwig.environment.Environment;
 import org.jtwig.environment.EnvironmentConfiguration;

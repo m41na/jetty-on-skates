@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} - My Webpage</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block head %}
+            <link type="text/css" href="/app/css/todos.css" rel="stylesheet">            
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+        <div id="footer">
+            {% block footer %}
+                &copy; Copyright 2018 by <a href="http://jarredweb.com/">JarredWeb</a>.
+            {% endblock %}
+        </div>
+    </body>
+</html>
+

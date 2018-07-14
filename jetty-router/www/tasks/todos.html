@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= page.title %></title>
+        <meta charset="<%= page.charset %>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <% for each(style in page.styles){ %>
+            <%= style %>
+        <% }; %>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div id="myDIV" class="header">
+                <h2>My To Do List</h2>
+                <form id="tasks_form">
+                    <input type="text" name="task" placeholder="Title...">
+                    <span onclick="createTask()" class="addBtn">Add</span>
+                </form>
+            </div>
+
+            <ul id="myUL">
+                <% for each(task in tasks){ %>
+                <li data-name="<%= task.name %>" <% if (task.completed) { %>class="checked"<% } %>><%= task.name %></li>
+                <% }; %>
+            </ul> 
+        </div>
+        
+        <% for each(script in page.bscripts){ %>
+            <%= script %>
+        <% }; %>
+    </body>
+</html>

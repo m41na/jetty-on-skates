@@ -12,7 +12,7 @@ var dao = {};
 (function(dao, load){
 
     var DataSource = Packages.org.apache.commons.dbcp2.BasicDataSource;
-    var Task = Packages.com.jarredweb.jettsey.todos.Task;
+    var Task = Packages.com.jarredweb.jesty.todos.Task;
 
     var Zjdbc = function(){
         this.config = {};
@@ -49,11 +49,11 @@ var dao = {};
             stmt = con.createStatement();
             var result = stmt.execute(query);
             if (result) {
-                onSuccess.call(this, "createTable was successful");
+                onSuccess("createTable was successful");
             }
         }
         catch(error){
-            onError.call(this, error.getMessage);
+            onError(error);
         }
         finally{
             if(stmt) stmt.close();
@@ -70,9 +70,9 @@ var dao = {};
                 stmt.addBatch(tasks[i]);
             }        
             var result = stmt.executeBatch();
-            onSuccess.call(this, result, "batch insert was successful");
+            onSuccess(result, "batch insert was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(stmt) stmt.close();
             if(con) con.close();
@@ -87,9 +87,9 @@ var dao = {};
             pst = con.prepareStatement(query);
             pst.setString(1, task);
             var result = pst.executeUpdate();
-            onSuccess.call(this, result, "createTask was successful");
+            onSuccess(result, "createTask was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -105,9 +105,9 @@ var dao = {};
             pst.setBoolean(1, done);
             pst.setString(2, task);
             var result = pst.executeUpdate();
-            onSuccess.call(this, result, "updated complete status");
+            onSuccess(result, "updated complete status");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -123,9 +123,9 @@ var dao = {};
             pst.setString(1, newName);
             pst.setString(2, task);
             var result = pst.executeUpdate();
-            onSuccess.call(this, result, "updateName was successful");
+            onSuccess(result, "updateName was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -140,9 +140,9 @@ var dao = {};
             pst = con.prepareStatement(query);
             pst.setString(1, task);
             var result = pst.executeUpdate();
-            onSuccess.call(this, result, "deleteTask was successful");
+            onSuccess(result, "deleteTask was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -162,12 +162,12 @@ var dao = {};
                 task.completed = rs.getBoolean("completed");
                 task.name = rs.getString("task");
                 task.created = rs.getDate("date_created");
-                onSuccess.call(this, task, "retrieveTask was successful");
+                onSuccess(task, "retrieveTask was successful");
             } else {
-                onSuccess.call(this, {}, "no task found");
+                onSuccess({}, "no task found");
             }
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -191,9 +191,9 @@ var dao = {};
                 task.created = rs.getDate("date_created");
                 result.push(task);
             }
-            onSuccess.call(this, result, "retrieveByRange was successful");
+            onSuccess(result, "retrieveByRange was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
@@ -216,9 +216,9 @@ var dao = {};
                 task.created = rs.getDate("date_created");
                 result.push(task);
             }
-            onSuccess.call(this, result, "retrieveTasks was successful");
+            onSuccess(result, "retrieveTasks was successful");
         } catch (error) {
-            onError.call(this, error.getMessage);
+            onError(error);
         }finally{
             if(pst) pst.close();
             if(con) con.close();
