@@ -10,7 +10,7 @@ import org.eclipse.jetty.util.component.LifeCycle;
 public class EventsClient {
 
     public static void main(String... args) {
-        URI uri = URI.create("ws://localhost:8080/ws/events/");
+        URI uri = URI.create("ws://localhost:8080/rws/events/");
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             try {

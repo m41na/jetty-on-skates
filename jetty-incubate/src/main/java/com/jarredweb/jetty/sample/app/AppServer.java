@@ -134,7 +134,7 @@ public class AppServer extends AbstractTasklet {
     private static ServletContextHandler getWebSocketHandler() throws IOException {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setErrorHandler(null);
-        contextHandler.setContextPath("/ws");
+        contextHandler.setContextPath("/rws");
         return contextHandler;
     }
     

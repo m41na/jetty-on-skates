@@ -1,8 +1,8 @@
 # Compiled class file
 *.class
-/target
-/nbproject
-/.settings
+target
+nbproject
+.settings
 .project
 .classpath
 

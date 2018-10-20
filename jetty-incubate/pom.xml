@@ -9,10 +9,11 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jetty.version>9.4.8.v20171121</jetty.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
         <jersey.version>2.26</jersey.version>
-        <spring.version>4.3.16.RELEASE</spring.version>
+        <spring.version>4.3.20.RELEASE</spring.version>
         <jackson.version>2.9.5</jackson.version>
+        <amqp.version>5.4.3</amqp.version>
     </properties>
     
     <dependencies>
@@ -129,7 +130,7 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
-            <version>5.1.2</version>
+            <version>${amqp.version}</version>
         </dependency>
         
         <!-- zesty tasks -->
