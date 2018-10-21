@@ -21,16 +21,7 @@ module.exports = {
                     { loader: "css-loader" }
                 ]
             },
-            {
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env']
-                    }
-                },
-                exclude: /node_modules/
-            },
+            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',

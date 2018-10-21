@@ -6,6 +6,9 @@ nbproject
 .project
 .classpath
 
+# npm artifacts
+**/node_modules
+
 # Log file
 *.log
 
