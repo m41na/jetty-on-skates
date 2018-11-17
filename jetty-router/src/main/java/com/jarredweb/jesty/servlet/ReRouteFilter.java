@@ -1,5 +1,6 @@
 package com.jarredweb.jesty.servlet;
 
+import com.google.gson.Gson;
 import com.jarredweb.jesty.route.AppRoute;
 import com.jarredweb.jesty.route.AppRoutes;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class ReRouteFilter implements Filter {
 
     protected FilterConfig fConfig;
     private final AppRoutes routes;
+    private final Gson gson = new Gson();
 
     public ReRouteFilter(AppRoutes routes) {
         super();
@@ -39,10 +41,13 @@ public class ReRouteFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HandlerRequest httpRequest = new HandlerRequest((HttpServletRequest) request);
-        HandlerResponse httpResponse = new HandlerResponse((HttpServletResponse)response);
+        HandlerResponse httpResponse = new HandlerResponse((HttpServletResponse)response);        
+        //set additional properties in response wrapper
+        httpResponse.context(httpRequest.getContextPath());
 
-        AppRoute route = routes.match(httpRequest);
+        AppRoute route = routes.search(httpRequest);
         if (route != null) {
+        	LOG.info("matched route -> {}", gson.toJson(route));
             httpRequest.route(route);
            httpRequest.getRequestDispatcher(route.pathId).forward(httpRequest, httpResponse);
         } else {

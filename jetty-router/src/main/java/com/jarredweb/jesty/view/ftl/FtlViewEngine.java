@@ -11,20 +11,39 @@ public class FtlViewEngine implements ViewEngine{
     private static FtlViewEngine instance;
     private final ViewConfiguration config;
     private final ViewProcessor view;
+    private final String templateDir;
+	private final String templateExt;
 
-    private FtlViewEngine() throws IOException {
-        config = new FtlViewConfiguration();
-        view = new FtlViewProcessor();
+    private FtlViewEngine(String templateDir, String templateExt) throws IOException {
+    	super();
+        this.templateDir = templateDir;
+        this.templateExt = templateExt;
+        this.config = new FtlViewConfiguration(templateDir);
+        this.view = new FtlViewProcessor();
     }
 
-    public static FtlViewEngine instance() throws IOException {
+    public static FtlViewEngine create(String templateDir, String templateExt) throws IOException {
         if (instance == null) {
             synchronized (FtlViewEngine.class) {
-                instance = new FtlViewEngine();
+                instance = new FtlViewEngine(templateDir, templateExt);
             }
         }
         return instance;
     }
+
+    public static FtlViewEngine instance() throws IOException {
+        return instance;
+    }
+
+    @Override
+	public String templateDir() {
+		return this.templateDir;
+	}
+
+	@Override
+	public String templateExt() {
+		return this.templateExt;
+	}
 
     public static ViewConfiguration getConfiguration() throws IOException {
         return instance().config;
@@ -37,8 +56,7 @@ public class FtlViewEngine implements ViewEngine{
     @Override
     public String merge(String template, Map<String, Object> model) throws Exception {
         StringWriter output = new StringWriter();
-        String templateName = !template.contains(".")? template.concat(".ftl") : template;
-        Template resolved = view.resolve(templateName, config.getEnvironment());
+        Template resolved = view.resolve(template + "." + templateExt, config.getEnvironment());
         resolved.process(model, output);
         return output.toString();
     }

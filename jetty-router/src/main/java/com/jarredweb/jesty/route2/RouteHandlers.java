@@ -35,7 +35,7 @@ public class RouteHandlers extends HandlerCollection {
         Handler[] handlers = getHandlers();
 
         if (handlers != null && isStarted()) {
-            AppRoute route = routes.match(request);
+            AppRoute route = routes.search(request);
             if (route != null) {
                 for (Handler handler1 : handlers) {
                     RouteHandler handler = (RouteHandler) handler1;

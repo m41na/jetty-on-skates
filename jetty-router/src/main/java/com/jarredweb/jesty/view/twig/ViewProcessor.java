@@ -11,6 +11,4 @@ public interface ViewProcessor {
     void write(HttpServletResponse response, JtwigTemplate template, String view, String contentType, Map<String, Object> model) throws IOException;
     
     JtwigTemplate resolve(String templatePath, ResourceReference where) throws Exception;
-    
-    String templateDir();
 }

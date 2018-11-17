@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 public class AppRoutes {
 
     private static final Logger LOG = LoggerFactory.getLogger(AppRoutes.class);
     private static AppRoutes instance;
     private final Set<AppRoute> routes = new HashSet<>();
+    private final Gson gson = new Gson();
 
     private AppRoutes() {
         super();
@@ -31,6 +34,7 @@ public class AppRoutes {
     }
 
     public void addRoute(AppRoute route) {
+    	LOG.debug("adding route {}", gson.toJson(route));
         this.routes.add(route);
     }
 
@@ -38,7 +42,7 @@ public class AppRoutes {
         return this.routes;
     }
 
-    public AppRoute match(HttpServletRequest input) {
+    public AppRoute search(HttpServletRequest input) {
         String path = input.getRequestURI();
         String method = input.getMethod();
         String accepts = input.getHeader("Accept");
@@ -55,20 +59,20 @@ public class AppRoutes {
         for (AppRoute route : routes) {
             String method = search.method;
             if(!"*".equals(route.method)){
-                if (route.method != null && method != null) {
+                if (isNotBlank(route.method) && isNotBlank(method)) {
                     if (!method.toLowerCase().equals(route.method.toLowerCase())) {
                         continue;
                     }
                 }
             }
             String accepts = search.accept;
-            if (route.accept != null && accepts != null) {
+            if (isNotBlank(route.accept) && isNotBlank(accepts)) {
                 if (!accepts.contains(route.accept)) {
                     continue;
                 }
             }
             String contentType = search.contentType;
-            if (route.contentType != null && contentType != null) {
+            if (isNotBlank(route.contentType) && isNotBlank(contentType)) {
                 if (!contentType.contains(route.contentType)) {
                     continue;
                 }
@@ -128,5 +132,9 @@ public class AppRoutes {
             return true;
         }
         return false;
+    }
+    
+    private boolean isNotBlank(String value) {
+    	return value != null && value.trim().length() > 0;
     }
 }

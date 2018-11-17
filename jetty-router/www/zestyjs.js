@@ -1,5 +1,10 @@
 function ping(){
-    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/Zestyjs.jar zesty.js");
+    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar.jar zestyjs.js");
+    //-agentlib:jdwp=transport=dt_shmem,server=y,suspend=n --> using terminal
+    //-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 --> using socket
+    //-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9009 --> using socket <= jdk1.4
+    //java -jar ../target/jetty-router-0.1.0-shaded.jar zestyjs.js
+    //java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 -jar ../target/jetty-router-0.1.0-shaded.jar zestyjs.js 
     return 'zestyjs ping invoked from js';
 }
 
@@ -15,24 +20,20 @@ function onError(msg){
     print(msg);
 };
 
-load('www/zjdbc.js');
-load('www/themes/basic/view/app-view.js');
+load('./lib/jvm-npm.js');
+load('./zjdbc.js');
 
 var todos = new dao.Zjdbc();
 todos.initDataSource();
 print('created todos DAO instance');
-
-var ViewException = Packages.com.jarredweb.jesty.view.ViewException;
-var FtlViewEngine = Packages.com.jarredweb.jesty.view.ftl.FtlViewEngine;
-var Template = Packages.freemarker.template.Template;
 
 var Date = Packages.java.util.Date;
 print(zesty.status().concat(" @ ").concat(now()));
 
 var app = zesty.provide({
     appctx: "/app",
-    assets: "www",
-    themes: "www/themes"
+    assets: "",
+    engine: "freemarker"
 });
 
 var router = app.router();
@@ -46,12 +47,12 @@ router.get('/ping', function(req, res) {
 });
 
 router.get('/ping/:name', function(req, res) {
-    var name = res.getParam(":name");
+    var name = req.param(":name");
     res.send("ping".concat(" by ").concat(name));
 });
 
 router.get('/pong', function(req, res) {
-    res.redirect("/wowza");
+    res.redirect(app.resolve("/wowza"));
 });
 
 router.get('/wowza', function (req, res) {
@@ -59,7 +60,7 @@ router.get('/wowza', function (req, res) {
 });
 
 router.get('/zesty', function(req, res) {
-    res.download("www/zestyjs.js", null, null, function(){print('download done!');});
+    res.download("/", "zestyjs.js", null, function(){print('download done!');});
 });
 
 router.get('/upload', function(req, res) {
@@ -72,32 +73,9 @@ router.post('/upload', '', 'multipart/form-data', function(req, res) {
     res.redirect("/upload");
 });
 
-router.get("/jobs", function(req, res) {
-    todos.retrieveByRange(0, 100, function(tasks, msg){
-        var view = new appView.TodosView();
-        
-        view.getModel = function () {
-            var model = {"tasks": tasks, "page": view};
-            return model;
-        };
-        
-        view.getContent = function () {
-            try {
-                var markup = view.loadMarkup("tasks/todos.ftl");
-                return view.mergeTemplate("todos-list", markup);
-            } catch (error) {
-                error.printStackTrace(java.lang.System.err);
-                throw new ViewException("ZestyView.buildContent: ".concat(error));
-            }
-        };
-        res.setContentType("text/html;charset=utf-8");
-        res.send(view.getContent());
-    }, onError);
-});
-
 router.get("/todos", function(req, res) {
     todos.retrieveByRange(0, 100, function(tasks, msg){
-        var model = {"tasks": tasks};
+        var model = {"tasks": tasks, title: "TodosJs List"};
         res.render("todos", model);  
     }, onError);
 });

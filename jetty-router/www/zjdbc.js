@@ -1,5 +1,6 @@
 function ping(){
-    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/Zestyjs.jar zjdbc.js");
+    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar zjdbc.js");
+    print("java -jar ../target/jetty-router-0.1.0-shaded.jar zjdbc.js");
     return 'zjdbc ping invoked from js';
 }
 
@@ -260,4 +261,4 @@ var dao = {};
         print("data loaded".concat(" @ ").concat(new Date().toString()));
     }
 
-})(dao, false);
+})(dao, true);

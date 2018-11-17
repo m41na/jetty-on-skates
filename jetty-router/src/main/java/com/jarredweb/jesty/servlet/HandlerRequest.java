@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Paths;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -146,10 +147,10 @@ public class HandlerRequest extends HttpServletRequestWrapper implements RouteRe
     public long upload(String dest) {
         String homeDir = System.getProperty("user.dir");
         // constructs path of the directory to save uploaded file
-        String savePath = "/www/media/".concat((dest != null && dest.trim().length() > 0) ? dest : "upload");
+        String savePath = (dest != null && dest.trim().length() > 0) ? dest : "upload";
 
         // creates the save directory if it does not exists
-        File fileSaveDir = new File(homeDir, savePath);
+        File fileSaveDir = Paths.get(homeDir).resolve(savePath).toFile();
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }

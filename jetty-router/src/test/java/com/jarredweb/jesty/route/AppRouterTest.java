@@ -47,7 +47,7 @@ public class AppRouterTest {
     public void testMatchBookAuthorNameRoute() {
         AppRoute incoming = new AppRoute("/book/1234/author/6789/name", "get", "application/json", "");
         Request request = new MockRoute(null, null, incoming);
-        AppRoute match = router.match(request);
+        AppRoute match = router.search(request);
         assertTrue(match != null);
         assertEquals("Expecting '1234'", "1234", match.pathParams.get(":id"));
         assertEquals("Expecting '6789'", "6789", match.pathParams.get(":uid"));
@@ -57,7 +57,7 @@ public class AppRouterTest {
     public void testMatchBookAuthorCityRoute() {
         AppRoute incoming = new AppRoute("/book/9876/author/5432/address/chicago", "get", "application/json", "");
         Request request = new MockRoute(null, null, incoming);
-        AppRoute match = router.match(request);
+        AppRoute match = router.search(request);
         assertTrue(match != null);
         assertEquals("Expecting '9876'", "9876", match.pathParams.get(":id"));
         assertEquals("Expecting '5432'", "5432", match.pathParams.get(":uid"));
@@ -70,19 +70,19 @@ public class AppRouterTest {
     public void testMatchBookPathWithDifferentMathods() {
         AppRoute incoming = new AppRoute("/book", "get", "application/json", "application/json");
         Request request = new MockRoute(null, null, incoming);
-        AppRoute match = router.match(request);
+        AppRoute match = router.search(request);
         assertTrue(match != null);
         assertEquals("Expecting 'get'", "get", match.method);
         
         incoming = new AppRoute("/book", "post", "application/json", "application/json");
         request = new MockRoute(null, null, incoming);
-        match = router.match(request);
+        match = router.search(request);
         assertTrue(match != null);
         assertEquals("Expecting 'post'", "post", match.method);
         
         incoming = new AppRoute("/book", "put", "application/json", "application/json");
         request = new MockRoute(null, null, incoming);
-        match = router.match(request);
+        match = router.search(request);
         assertTrue(match != null);
         assertEquals("Expecting 'put'", "put", match.method);
     }

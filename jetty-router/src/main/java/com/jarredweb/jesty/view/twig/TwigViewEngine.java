@@ -1,43 +1,68 @@
 package com.jarredweb.jesty.view.twig;
 
-import com.jarredweb.jesty.view.ViewEngine;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.resource.reference.ResourceReference;
 
+import com.jarredweb.jesty.view.ViewEngine;
+
 public class TwigViewEngine implements ViewEngine{
 
-    private static TwigViewEngine instance;
+	private static TwigViewEngine instance;
     private final ViewConfiguration config;
     private final ViewProcessor view;
+    private final String templateDir;
+	private final String templateExt;	
 
-    private TwigViewEngine() {
-        config = new TwigViewConfiguration();
-        view = new TwigViewProcessor(config);
+    private TwigViewEngine(String templateDir, String templateExt) {
+    	super();
+        this.templateDir = templateDir;
+        this.templateExt = templateExt;
+        this.config = new TwigViewConfiguration();
+        this.view = new TwigViewProcessor(config);
     }
-
-    public static TwigViewEngine instance() {
+    
+    public static TwigViewEngine create(String templateDir, String templateExt) throws IOException {
         if (instance == null) {
             synchronized (TwigViewEngine.class) {
-                instance = new TwigViewEngine();
+                instance = new TwigViewEngine(templateDir, templateExt);
             }
         }
         return instance;
     }
+    
+    public static TwigViewEngine instance() throws IOException {
+        return instance;
+    }
 
-    public static ViewConfiguration getConfiguration() {
-        return instance().config;
+    @Override
+	public String templateDir() {
+		return this.templateDir;
+	}
+
+	@Override
+	public String templateExt() {
+		return this.templateExt;
+	}
+
+	public static ViewConfiguration getConfiguration() {
+        return TwigViewEngine.instance.config;
     }
 
     public static ViewProcessor getProcessor() {
-        return instance().view;
+        return TwigViewEngine.instance.view;
     }
 
     @Override
     public String merge(String template, Map<String, Object> model) throws Exception{
-        JtwigTemplate resolved = TwigViewEngine.getProcessor().resolve(template, ResourceReference.file(new File(".", view.templateDir())));
+    	String baseDir = System.getProperty("user.dir");
+    	Path path = Paths.get(baseDir, templateDir);
+        JtwigTemplate resolved = getProcessor().resolve(path.resolve(template + "." + templateExt).toString(), ResourceReference.file(templateDir));
         return resolved.render(JtwigModel.newModel(model));
     }
 }

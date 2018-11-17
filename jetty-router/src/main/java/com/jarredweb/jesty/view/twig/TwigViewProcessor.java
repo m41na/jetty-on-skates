@@ -2,9 +2,10 @@ package com.jarredweb.jesty.view.twig;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Paths;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.resource.reference.ResourceReference;
@@ -26,13 +27,8 @@ public class TwigViewProcessor implements ViewProcessor{
 
     @Override
     public JtwigTemplate resolve(String templatePath, ResourceReference where) throws Exception {
-        ResourceReference resource = new ResourceReference(where.getType(), Paths.get("www/" + templatePath + ".html").toFile().getAbsolutePath());
+        ResourceReference resource = new ResourceReference(where.getType(), templatePath);
         JtwigTemplate jtwigTemplate = new JtwigTemplate(factory.getEnvironment(), resource);
         return jtwigTemplate;
-    }
-
-    @Override
-    public String templateDir() {
-        return "www";
     }
 }

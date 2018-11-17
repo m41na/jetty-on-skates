@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class AppProvider {
 
-    private String status = "not ready";
+    private final String status;
 
     public AppProvider() {
         this.status = "now ready";

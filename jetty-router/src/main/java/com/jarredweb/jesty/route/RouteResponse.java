@@ -1,11 +1,16 @@
 package com.jarredweb.jesty.route;
 
-import com.jarredweb.jesty.servlet.HandlerStatus;
 import java.util.Map;
+
+import com.jarredweb.jesty.servlet.HandlerStatus;
 
 public interface RouteResponse {
     
     void header(String header, String value);
+    
+    void templates(String folder);
+    
+    void context(String ctx);
     
     void status(int status);
     

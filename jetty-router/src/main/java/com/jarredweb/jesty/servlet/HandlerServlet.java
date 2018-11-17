@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory;
 
 public class HandlerServlet extends HttpServlet {
 
-    private final String ID = UUID.randomUUID().toString();
+	private static final long serialVersionUID = 1L;
+	private final String ID = UUID.randomUUID().toString();
     private final Logger LOG = LoggerFactory.getLogger(HandlerServlet.class);
 
     public void handle(HandlerRequest request, HandlerResponse response) {
@@ -70,7 +71,7 @@ public class HandlerServlet extends HttpServlet {
     }
 
     protected void doProcess(HandlerRequest request, HandlerResponse response) throws ServletException, IOException {
-        AsyncContext async = request.startAsync(request, response);
+        //AsyncContext async = request.startAsync(request, response);
         
         try {
             //handle the request
@@ -78,7 +79,6 @@ public class HandlerServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error("Exception occured while executing 'handle()' function", e);
             response.sendError(500, e.getMessage());
-            async.complete();
             return;
         }
         
@@ -90,19 +90,16 @@ public class HandlerServlet extends HttpServlet {
                 LOG.error("Exception occured while executing 'handle()' function", e);
                 response.sendError(500, e.getMessage());
             }
-            async.complete();
             return;
         }
 
         if (response.redirect) {
             response.sendRedirect(response.routeUri);
-            async.complete();
             return;
         }
 
         if (request.error) {
             response.sendError(HttpStatus.BAD_REQUEST_400, request.message());
-            async.complete();
             return;
         }
 
@@ -114,8 +111,6 @@ public class HandlerServlet extends HttpServlet {
                 out.write(content);
             }
         }
-        //complete sync context
-        async.complete();
     }
 
     protected final Thread.UncaughtExceptionHandler h = (Thread th, Throwable ex) -> {
