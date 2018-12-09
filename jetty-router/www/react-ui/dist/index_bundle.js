@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "e39fb1da828bdee2f436";
+/******/ 	var hotCurrentHash = "4d97dd0bb142d016cd0f";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -30171,6 +30171,9 @@ function (_React$Component) {
     value: function onCreateTask(e) {
       e.preventDefault();
       this.props.createTask(this.state.task);
+      this.setState({
+        task: ''
+      });
     }
   }, {
     key: "onUpdateDone",

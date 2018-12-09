@@ -7,7 +7,7 @@
         </encoder>
     </appender>
   
-    <logger name="com.jarredweb.jesty" level="TRACE"/>  
+    <logger name="com.practicaldime.jesty" level="TRACE"/>  
 
     <root level="debug">
         <appender-ref ref="STDOUT" />

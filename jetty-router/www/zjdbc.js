@@ -4,46 +4,33 @@ function ping(){
     return 'zjdbc ping invoked from js';
 }
 
-function now(){
-    return new java.text.SimpleDateFormat("hh:mm:ss").format(new java.util.Date())
-}
-
-var dao = {};
+let dao = {};
 
 (function(dao, load){
 
     var DataSource = Packages.org.apache.commons.dbcp2.BasicDataSource;
-    var Task = Packages.com.jarredweb.jesty.todos.Task;
+    var Task = Packages.com.practicaldime.jesty.todos.Task;
 
-    var Zjdbc = function(){
-        this.config = {};
-        this.config.properties = {
-            "jdbc.driverClassName": "org.h2.Driver",
-            "jdbc.url": "jdbc:h2:./data/todos.js_db;DB_CLOSE_DELAY=-1",
-            "jdbc.username": "sa",
-            "jdbc.password": "sa"
+    var DB = function(params){
+         this.config = {
+            "jdbc.driverClass": params && params['driverClass'] || "org.h2.Driver",
+            "jdbc.url":         params && params['url'] || "jdbc:h2:./data/todos.js_db;DB_CLOSE_DELAY=-1",
+            "jdbc.username":    params && params['username'] || "sa",
+            "jdbc.password":    params && params['password'] || "sa"
         };
         this.ds = undefined;
     };
 
-    Zjdbc.prototype.initConfig = function(config){
-        this.config = config;
-    };
-
-    Zjdbc.prototype.getConfig = function(){
-        return this.config;
-    };
-
-    Zjdbc.prototype.initDataSource = function(init){
+    DB.prototype.init = function(init){
         var dataSource = new DataSource();
-        dataSource.setDriverClassName(this.config.properties["jdbc.driverClassName"]);
-        dataSource.setUrl(this.config.properties["jdbc.url"]);
-        dataSource.setUsername(this.config.properties["jdbc.username"]);
-        dataSource.setPassword(this.config.properties["jdbc.password"]);
+        dataSource.setDriverClassName(this.config["jdbc.driverClass"]);
+        dataSource.setUrl(this.config["jdbc.url"]);
+        dataSource.setUsername(this.config["jdbc.username"]);
+        dataSource.setPassword(this.config["jdbc.password"]);
         this.ds = dataSource;
     };
 
-    Zjdbc.prototype.createTable = function(query, onSuccess, onError){
+    DB.prototype.createTable = function(query, onSuccess, onError){
         var con, stmt;
         try{
             con = this.ds.getConnection(); 
@@ -62,25 +49,43 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.insertBatch = function(tasks, onSuccess, onError) {
-        var con, stmt;
+    DB.prototype.createTasks = function(tasks, onSuccess, onError) {
+        var query = "merge into tbl_todos (task, completed) key(task) values (?, false)";
+        var con, pst;
         try {
             con = this.ds.getConnection(); 
-            stmt = con.createStatement();
+            pst = con.prepareStatement(query);
             for(var i= 0; i < tasks.length; i++){
-                stmt.addBatch(tasks[i]);
+                pst.setString(1, tasks[i]);
+                pst.addBatch();
             }        
-            var result = stmt.executeBatch();
+            var result = pst.executeBatch();
             onSuccess(result, "batch insert was successful");
         } catch (error) {
             onError(error);
         }finally{
-            if(stmt) stmt.close();
+            if(pst) pst.close();
             if(con) con.close();
         }
     };
 
-    Zjdbc.prototype.createTask = function(task, onSuccess, onError) {
+    DB.prototype.clearAllTasks = function (onSuccess, onError) {
+        var query = "TRUNCATE table tbl_todos";
+        var con, stmt;
+        try {
+            con = this.ds.getConnection();
+            stmt = con.createStatement();
+            var result = stmt.executeUpdate(query);
+            onSuccess(result, "Table data truncated");
+        } catch (error) {
+            onError(error);
+        } finally {
+            if (stmt) stmt.close();
+            if (con) con.close();
+        }
+    };
+
+    DB.prototype.createTask = function(task, onSuccess, onError) {
         var query = "INSERT INTO tbl_todos (task) values (?)";
         var con, pst;
         try {
@@ -97,7 +102,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.updateDone = function(task, done, onSuccess, onError) {
+    DB.prototype.updateDone = function(task, done, onSuccess, onError) {
         var query = "UPDATE tbl_todos set completed=? where task = ?";
         var con, pst;
         try {
@@ -115,7 +120,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.updateName = function(task, newName, onSuccess, onError) {
+    DB.prototype.updateName = function(task, newName, onSuccess, onError) {
         var query = "UPDATE tbl_todos set task=? where task = ?";
         var con, pst;
         try {
@@ -133,7 +138,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.deleteTask = function(task, onSuccess, onError) {
+    DB.prototype.deleteTask = function(task, onSuccess, onError) {
         var query = "DELETE from tbl_todos where task = ?";
         var con, pst;
         try {
@@ -150,7 +155,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.retrieveTask = function(name, onSuccess, onError) {
+    DB.prototype.retrieveTask = function(name, onSuccess, onError) {
         var query = "SELECT * from tbl_todos where task = ?";
         var con, pst;
         try {
@@ -175,7 +180,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.retrieveByRange = function(start, size, onSuccess, onError) {
+    DB.prototype.retrieveByRange = function(start, size, onSuccess, onError) {
         var query = "SELECT * from tbl_todos limit ? offset ?";
         var con, pst;
         try {
@@ -201,7 +206,7 @@ var dao = {};
         }
     };
 
-    Zjdbc.prototype.retrieveByDone = function(completed, onSuccess, onError) {
+    DB.prototype.retrieveByDone = function(completed, onSuccess, onError) {
         var query = "SELECT * from tbl_todos where completed = ?";
         var con, pst;
         try {
@@ -226,39 +231,31 @@ var dao = {};
         }
     };
 
-    //export Zjdbc through 'dao' 
-    dao.Zjdbc = Zjdbc;
+    //export DB through 'dao' 
+    dao.DB = DB;
 
     //load data if necessary
     if(load){
-        function onCreate(msg){
-            print(msg);
-        }
+        let onError = msg => print(msg);
+        let onSuccess = msg => print(msg);
         
         //init database and insert data
-        var zjdbc = new dao.Zjdbc();
-        zjdbc.initDataSource();
-
-        var data = [
-            "merge into tbl_todos (task, completed) key(task) values ('buy milk', false);",
-            "merge into tbl_todos (task, completed) key(task) values ('work out', true);",
-            "merge into tbl_todos (task, completed) key(task) values ('watch game', false);",
-            "merge into tbl_todos (task, completed) key(task) values ('hit gym', false);",
-            "merge into tbl_todos (task, completed) key(task) values ('go to meeting', true);"
-        ];
-        
-        zjdbc.createTable([
+        var db = new dao.DB();
+        db.init();        
+        db.createTable([
             "CREATE TABLE IF NOT EXISTS tbl_todos (",
             "  task varchar(25) UNIQUE NOT NULL,",
             "  completed boolean DEFAULT false,",
             "  date_created datetime default current_timestamp,",
             "  PRIMARY KEY (task)",
             ")"
-        ].join(""), onCreate, onCreate);
+        ].join(""), onSuccess, onError);
 
-        zjdbc.insertBatch(data, function(res, msg){print("res=" + res + ", msg=" + msg);}, function(msg){print(msg);});
+        var data = ['buy milk', 'work out', 'watch game', 'hit gym', 'go to meeting'];
+        db.createTasks(data, (res, msg) => print("res=" + res + ", msg=" + msg), onError);
 
         print("data loaded".concat(" @ ").concat(new Date().toString()));
     }
 
 })(dao, true);
+

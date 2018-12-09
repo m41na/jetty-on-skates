@@ -9,7 +9,7 @@ var sayHello = function(name) {
     return 'hello from javascript';
 };
 
-var NashJs = Java.type('com.jarredweb.editor.app.NashJs');
+var NashJs = Java.type('com.practicaldime.editor.app.NashJs');
 
 // call the static method
 var greetingResult = NashJs.javaHello('Mars');

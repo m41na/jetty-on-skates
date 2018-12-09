@@ -1,5 +1,3 @@
-load('www/lib/jvm-npm.js');
-
 const window = {};
 
 const Handlebars = require('www/lib/handlebars.js');

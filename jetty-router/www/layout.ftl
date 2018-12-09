@@ -5,7 +5,7 @@
         <title>${title}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link type="text/css" href="/app/css/todos.css" rel="stylesheet">
+        <link type="text/css" href="/css/todos.css" rel="stylesheet">
     </head>
     <body>
         <div>

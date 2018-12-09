@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel src -d views",
     "build": "webpack --color --mode=development",
     "start": "webpack-dev-server --open --color --progress --mode=development"
   },

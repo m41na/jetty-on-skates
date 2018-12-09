@@ -10,12 +10,12 @@
         </div>
 
         <ul id="myUL">
-            <#list tasks?values as task>
+            <#list tasks as task>
             <li data-name="${ task.name }" <#if task.completed>class="checked"</#if>>${ task.name }</li>
             </#list>
         </ul> 
         </ul> 
     </div>    
     
-    <script type="text/javascript" src="/app/js/todos.js"></script>
+    <script type="text/javascript" src="/js/todos.js"></script>
 </@layout.basic>

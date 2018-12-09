@@ -7,7 +7,7 @@
     </layout>
   </appender>
   
-  <logger name="com.jarredweb.jetty.flux" level="TRACE"/>
+  <logger name="com.practicaldime.jetty.flux" level="TRACE"/>
   
 
   <root level="debug">

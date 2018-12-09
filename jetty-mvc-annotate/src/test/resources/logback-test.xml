@@ -7,7 +7,7 @@
     </layout>
   </appender>
   
-  <logger name="com.jarredweb.jetty.mvc" level="TRACE"/>
+  <logger name="com.practicaldime.jetty.mvc" level="TRACE"/>
   
 
   <root level="debug">
