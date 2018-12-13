@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.NODE_ENV !== 'production'
+//SERVICE_NAME=react npm run start
 
 module.exports = {
     entry: {
@@ -51,6 +52,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
+        }),
+        new webpack.DefinePlugin({
+            SERVICE_NAME: JSON.stringify(process.env.SERVICE_NAME)
         }),
         new webpack.HotModuleReplacementPlugin()
     ]

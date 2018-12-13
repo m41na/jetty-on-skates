@@ -2,7 +2,8 @@ const initialState = [
     {name: 'Walk the dog', completed: true}, 
     {name: 'Run a mile', completed: false}, 
     {name: 'Hit the gym', completed: true}, 
-    {name: 'Swim an hour', completed: false}
+    {name: 'Swim an hour', completed: false},
+    {name: 'Connect to DB', completed: false}
 ];
 
 const rootReducer = (state = initialState, action) => {
@@ -23,7 +24,7 @@ const rootReducer = (state = initialState, action) => {
             });
         }
         case "DELETE_TASK": {
-            return state.filter(e=> e.name !== action.payload);
+            return action.payload;
         }
         default: {
             return state;

@@ -4,6 +4,7 @@ target
 nbproject
 .settings
 **/upload
+**/dist
 .project
 .classpath
 

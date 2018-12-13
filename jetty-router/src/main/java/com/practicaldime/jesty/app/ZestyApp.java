@@ -35,8 +35,8 @@ public class ZestyApp {
 
 		Map<String, String> props = Maps.newHashMap();
 		props.put("appctx", "/app");
-		props.put("assets", "www"); //"www/handlebars-ui/dist"
-		props.put("engine", "freemarker"); //string, twig, freemarker
+		props.put("assets", "www/react-ui/dist"); //"www/handlebars-ui/dist"
+		props.put("engine", "jtwig"); //string, jtwig, freemarker
 
 		AppServer app = new AppServer(props);
 
@@ -126,17 +126,6 @@ public class ZestyApp {
 				model.put("tasks", tasks);
 				response.render("todos", model);
 			}
-		}).get("/todos/json", "", "application/json", new HandlerServlet() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void handle(HandlerRequest request, HandlerResponse response) {
-				List<Task> tasks = todos.retrieveByRange(0, 100);
-				Map<String, Object> model = new HashMap<>();
-				model.put("title", "Todos List");
-				model.put("tasks", tasks);
-				response.json(model);
-			}
 		}).get("/todos/done", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
 
@@ -210,6 +199,14 @@ public class ZestyApp {
 				todos.deleteTask(task);
 
 				response.json(task);
+			}
+		}).delete("/todos/all", new HandlerServlet() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handle(HandlerRequest request, HandlerResponse response) {
+				int status = todos.clearAllTasks();
+				response.json(status);
 			}
 		}).get("/basex/:source", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;

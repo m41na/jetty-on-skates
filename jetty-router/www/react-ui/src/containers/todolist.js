@@ -10,13 +10,22 @@ const mapStateToProps = state => {
   return { todos: state };
 };
 
+const SERVICE_URI = function() {
+    switch(SERVICE_NAME){
+        case 'react':
+            return "http://localhost:5050/app";
+        default:
+            return `http://${window.location.host}/app`
+    }
+}();
+
 const mapDispatchToProps = dispatch => ({
     retrieveTasks: ()=> {
-        const url = 'http://localhost:8080/app/todos';
+        const url = `${SERVICE_URI}/todos`;
         const headers = {'Accept': 'application/json'};
         axios.get(url, null, headers).then(response => {
             let todos = response.data;
-            dispatch(retrieveTasks(todos.tasks));
+            dispatch(retrieveTasks(todos));
         }).catch(error => {
             console.log('retrieveTasks error ', error);
         });
@@ -24,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
 
     createTask: (value) => {
         if (value) {
-            const url = 'http://localhost:8080/app/todos';
+            const url = `${SERVICE_URI}/todos`;
             const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
             const data = qs.stringify({task: value});
             axios.post(url, data, {headers: headers}).then(response => {
@@ -36,7 +45,7 @@ const mapDispatchToProps = dispatch => ({
     },
 
     updateDone: (name, complete) => {
-        const url = 'http://localhost:8080/app/todos/done';
+        const url = `${SERVICE_URI}/todos/done`;
         const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
         const data = qs.stringify({task: name, complete: complete});
         axios.put(url, data, {headers: headers}).then(response => {
@@ -48,11 +57,11 @@ const mapDispatchToProps = dispatch => ({
     },
 
     deleteTask: (name) => {
-        const url = 'http://localhost:8080/app/todos?name=' + name;
+        const url = `${SERVICE_URI}/todos?name=${name}`;
         const headers = {'Accept': 'application/json'};
         axios.delete(url, null, headers).then(response => {
-            let task = response.data;
-            dispatch(deleteTask(task));
+            let todos = response.data;
+            dispatch(deleteTask(todos));
         }).catch(error => {
             console.log('deleteTask error ', error);
         }); 

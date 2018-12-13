@@ -47,7 +47,7 @@ class TodoList extends React.Component{
                 </div>
 
                 <ul id="myUL">
-                    {todos.map(e=>
+                    {todos && todos.map(e=>
                     <li key={e.name} data-name={e.name} className={e.completed?'checked':''} >
                         <span onClick={()=>this.onUpdateDone(e.name, e.completed)}>{e.name}</span> 
                         <span className="close" onClick={()=>this.onDeleteTask(e.name)}>x</span>
