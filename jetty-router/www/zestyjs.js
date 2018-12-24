@@ -1,9 +1,10 @@
 let zesty = Java.type('com.practicaldime.zesty.app.AppProvider');
 
 function ping() {
-    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar.jar zestyjs.js");
-    //-agentlib:jdwp=transport=dt_shmem,server=y,suspend=n --> using terminal
-    //-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 --> using socket
+    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar zestyjs.js");
+    print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar -J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 zestyjs.js");
+    //-J-agentlib:jdwp=transport=dt_shmem,server=y,suspend=n --> using terminal
+    //-J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 --> using socket
     //-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9009 --> using socket <= jdk1.4
     //java -jar ../target/jetty-router-0.1.0-shaded.jar zestyjs.js
     //java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9099 -jar ../target/jetty-router-0.1.0-shaded.jar zestyjs.js 
@@ -30,7 +31,7 @@ function onError(msg) {
 };
 
 load('./lib/jvm-npm.js');
-load('./zjdbc-spring.js');
+load('./zjdbc.js');
 
 var db = new dao.DB();
 db.init();
@@ -148,7 +149,7 @@ router.delete("/todos", function (req, res) {
     var task = req.param("name");
     db.deleteTask(task, onSuccess, onError);
 
-    res.redirect(app.resolve("/todos/refresh"));
+    res.redirect(303, app.resolve("/todos/refresh"));
 });
 
 router.wordpress("/var/www/wordpress", "http://localhost:9000");

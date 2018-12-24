@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 const SERVICE_URI = function() {
     switch(SERVICE_NAME){
         case 'react':
-            return "http://localhost:5050/app";
+            return "http://localhost:8080/app";
         default:
             return `http://${window.location.host}/app`
     }
@@ -21,7 +21,7 @@ const SERVICE_URI = function() {
 
 const mapDispatchToProps = dispatch => ({
     retrieveTasks: ()=> {
-        const url = `${SERVICE_URI}/todos`;
+        const url = `${SERVICE_URI}/todos/refresh`;
         const headers = {'Accept': 'application/json'};
         axios.get(url, null, headers).then(response => {
             let todos = response.data;

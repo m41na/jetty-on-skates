@@ -2,7 +2,7 @@ load(dist + '/jvm-npm.js');
 
 var window = {};
 
-var Handlebars = require(dist + '/handlebars.js');
+load(dist + '/handlebars.js');
 
 let source = `
     <div class="wrapper">

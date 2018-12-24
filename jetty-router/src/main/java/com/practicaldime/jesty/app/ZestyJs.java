@@ -2,6 +2,10 @@ package com.practicaldime.jesty.app;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.script.ScriptException;
 
@@ -9,8 +13,8 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
 
+import com.google.gson.Gson;
 import com.practicaldime.zesty.app.AppProvider;
-
 
 public class ZestyJs {
 
@@ -46,11 +50,24 @@ public class ZestyJs {
 			// ENGINE.eval(new FileReader("www/todoapp/index.js"));
 			//context.eval(Source.newBuilder("js", new File("www/lib/jvm-npm.js")).build());
 			//context.eval(Source.newBuilder("js", new File("www/lib/test-load-handlebars.js")).build());
-			context.eval(Source.newBuilder("js", new File("www/zestyjs.js")).build());
+			//context.eval(Source.newBuilder("js", new File("www/zestyjs.js")).build());
+			renderHandlebars();
 			//ENGINE.eval(new FileReader("www/sample.js"));
 			//ENGINE.eval(new FileReader("www/lib/test-load-ejs.js"));
 			//$GRAALVM_HOME/bin/node --jvm --polyglot script.js
 		}
+	}
+	
+	public static void renderHandlebars() throws ScriptException, NoSuchMethodException, IOException {
+		Map<String, Object> model = new HashMap<>();
+		List<Todo> tasks = Arrays.asList(new Todo("fishing", false), new Todo("baking", true), new Todo("skiing", false));
+		model.put("tasks", tasks);
+		
+		Value bindings = context.getBindings("js");		
+		String strModel = new Gson().toJson(model);
+		bindings.putMember("model", strModel);
+		bindings.putMember("dist", "./");
+		context.eval(Source.newBuilder("js", new File("www/lib/test-render-handlebars.js")).build());
 	}
 
 	public static void ping() throws ScriptException {
@@ -59,5 +76,33 @@ public class ZestyJs {
 
 	public static void main(String... args) throws ScriptException, NoSuchMethodException, IOException {
 		new ZestyJs().start(args);
+	}
+	
+	static class Todo{
+		
+		private String name;
+		private boolean completed;
+		
+		public Todo(String name, boolean completed) {
+			super();
+			this.name = name;
+			this.completed = completed;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public boolean isCompleted() {
+			return completed;
+		}
+
+		public void setCompleted(boolean completed) {
+			this.completed = completed;
+		}
 	}
 }

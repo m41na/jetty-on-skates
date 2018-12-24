@@ -1,6 +1,6 @@
 const window = {};
 
-const Handlebars = require('www/lib/handlebars.js');
+load('www/lib/handlebars.js');
 
 var source = "<div class='body'>{{body}}</div>"
 

@@ -1,6 +1,8 @@
 function ping(){
     print("jjs --language=es6 -ot -scripting -J-Djava.class.path=../target/jetty-router-0.1.0-shaded.jar zjdbc-spring.js");
     print("java -jar ../target/jetty-router-0.1.0-shaded.jar zjdbc-spring.js");
+    print("start h2 db server -> java -cp www/lib/h2-1.4.197.jar org.h2.tools.Server");
+    print("connect to h2 db server -> jdbc:h2:tcp://localhost/./data/todos.spring.js_db");
     return 'zjdbc-spring ping invoked from js';
 }
 
@@ -19,7 +21,7 @@ let dao = {};
     let DB = function(params){
         this.config = {
             "jdbc.driverClass": params && params['driverClass'] || "org.h2.Driver",
-            "jdbc.url":         params && params['url'] || "jdbc:h2:./data/todos.spring.js_db;DB_CLOSE_DELAY=-1",
+            "jdbc.url":         params && params['url'] || "jdbc:h2:tcp://localhost/./data/todos.spring.js_db;DB_CLOSE_DELAY=-1",
             "jdbc.username":    params && params['username'] || "sa",
             "jdbc.password":    params && params['password'] || "sa"
         };

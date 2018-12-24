@@ -188,7 +188,7 @@ public class ZestyApp {
 				String task = request.getParameter("name");
 				todos.deleteTask(task);
 
-				response.redirect(app.resolve("/todos/refresh"));
+				response.redirect(303, app.resolve("/todos/refresh"));
 			}
 		}).delete("/todos", "application/json", "", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
