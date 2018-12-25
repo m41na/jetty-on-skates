@@ -10,23 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import com.practicaldime.zesty.route.AppRoute;
+import com.practicaldime.zesty.router.Route;
 
 
 public class RouteHandler extends AbstractHandler{
     
-    private final AppRoute route;
+    private final Route route;
 
-    public RouteHandler(AppRoute route) {
+    public RouteHandler(Route route) {
         this.route = route;
     }
 
-    public AppRoute getRoute() {
+    public Route getRoute() {
         return route;
-    }
-    
-    public String param(String key) {
-        return route.pathParams.get(key);
     }
     
     @Override
@@ -36,7 +32,7 @@ public class RouteHandler extends AbstractHandler{
 
         PrintWriter out = response.getWriter();
 
-        out.println("<h1>" + param(":lang") + "</h1>");
+        out.println("<h1>".concat(route.method) + ":" + route.path.concat("</h1>"));
         
         baseRequest.setHandled(true);
     }

@@ -12,7 +12,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.practicaldime.zesty.route.AppConfig;
+import com.practicaldime.zesty.basics.AppConfig;
 
 public class TodosDaoConfig {
 

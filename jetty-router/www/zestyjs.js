@@ -54,8 +54,8 @@ router.get('/ping', function (req, res) {
     res.redirect(app.resolve("/ping/server"));
 });
 
-router.get('/ping/:name', function (req, res) {
-    var name = req.param(":name");
+router.get('/ping/{name}', function (req, res) {
+    var name = req.param("name");
     res.send("ping".concat(" by ").concat(name));
 });
 

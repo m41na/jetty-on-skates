@@ -11,8 +11,8 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.util.annotation.ManagedObject;
 
-import com.practicaldime.zesty.route.AppRoute;
-import com.practicaldime.zesty.route.AppRoutes;
+import com.practicaldime.zesty.basics.AppRoutes;
+import com.practicaldime.zesty.router.RouteSearch;
 
 /**
  * Matches handler to route to process the request
@@ -38,7 +38,7 @@ public class RouteHandlers extends HandlerCollection {
         Handler[] handlers = getHandlers();
 
         if (handlers != null && isStarted()) {
-            AppRoute route = routes.search(request);
+        	RouteSearch route = routes.search(request);
             if (route != null) {
                 for (Handler handler1 : handlers) {
                     RouteHandler handler = (RouteHandler) handler1;

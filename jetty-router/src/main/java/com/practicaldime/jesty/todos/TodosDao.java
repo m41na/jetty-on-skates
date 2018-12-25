@@ -16,7 +16,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.practicaldime.zesty.route.AppConfig;
+import com.practicaldime.zesty.basics.AppConfig;
 
 public class TodosDao {
 

@@ -35,8 +35,8 @@ public class ZestyApp {
 
 		Map<String, String> props = Maps.newHashMap();
 		props.put("appctx", "/app");
-		props.put("assets", "www/react-ui/dist"); //"www/handlebars-ui/dist"
-		props.put("engine", "jtwig"); //string, jtwig, freemarker
+		props.put("assets", "www"); //"www/handlebars-ui/dist, www/react-ui/dist"
+		props.put("engine", "freemarker"); //string, jtwig, freemarker
 
 		AppServer app = new AppServer(props);
 
@@ -208,12 +208,12 @@ public class ZestyApp {
 				int status = todos.clearAllTasks();
 				response.json(status);
 			}
-		}).get("/basex/:source", new HandlerServlet() {
+		}).get("/basex/{source}", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void handle(HandlerRequest request, HandlerResponse response) {
-				String source = request.param(":source");
+				String source = request.param("source");
 				try (InputStream is = this.getClass().getResourceAsStream("/xmldata/" + source + ".xml");
 						Scanner s = new Scanner(is).useDelimiter("\\A")) {
 					String result = s.hasNext() ? s.next() : "";
@@ -222,12 +222,12 @@ public class ZestyApp {
 					response.sendStatus(400);
 				}
 			}
-		}).post("/basex/:source", new HandlerServlet() {
+		}).post("/basex/{source}", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void handle(HandlerRequest request, HandlerResponse response) {
-				String source = request.param(":source");
+				String source = request.param("source");
 				LOG.info("xml source is {}", source);
 
 				long size = request.capture();
