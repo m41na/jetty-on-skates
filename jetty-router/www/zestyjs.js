@@ -83,7 +83,7 @@ router.get('/upload', function (req, res) {
 router.post('/upload', '', 'multipart/form-data', function (req, res) {
     var dest = req.param('destination');
     req.upload(dest);
-    res.redirect(app.resovle("/upload"));
+    res.redirect(app.resolve("/upload"));
 });
 
 router.get("/todos", function (req, res) {

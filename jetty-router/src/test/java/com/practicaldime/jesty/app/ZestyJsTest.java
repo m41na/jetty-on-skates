@@ -3,14 +3,12 @@ package com.practicaldime.jesty.app;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.practicaldime.zesty.app.ZestyJs;
-
 public class ZestyJsTest {
     
     @Test
     public void testPing() throws Exception {
         System.out.println("ping");
-        ZestyJs.ping();
+        ZestySh.ping();
     }
     
     @Test
@@ -18,13 +16,13 @@ public class ZestyJsTest {
     public void testStart() throws Exception {
         System.out.println("start");
         String[] args = new String[]{"www/zjdbc-junit.js"};
-        new ZestyJs().start(args);
+        new ZestySh().start(args);
     }
     
     @Test
     public void testSpring() throws Exception {
         System.out.println("start");
         String[] args = new String[]{"test/sample-inject.js"};
-        new ZestyJs().start(args);
+        new ZestySh().start(args);
     }
 }

@@ -35,8 +35,8 @@ public class ZestyApp {
 
 		Map<String, String> props = Maps.newHashMap();
 		props.put("appctx", "/app");
-		props.put("assets", "www"); //"www/handlebars-ui/dist, www/react-ui/dist"
-		props.put("engine", "freemarker"); //string, jtwig, freemarker
+		props.put("assets", "www/handlebars-ui/dist"); //"www/handlebars-ui/dist, www/react-ui/dist"
+		props.put("engine", "string"); //string, jtwig, freemarker
 
 		AppServer app = new AppServer(props);
 
