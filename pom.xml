@@ -133,13 +133,6 @@
             <version>${amqp.version}</version>
         </dependency>
         
-        <!-- zesty tasks -->
-        <dependency>
-            <groupId>com.practicaldime.works</groupId>
-            <artifactId>zesty-tasklet</artifactId>
-            <version>0.5.0-beta</version>
-        </dependency>
-        
         <!-- junit testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -164,12 +157,10 @@
     </build>
     <name>jetty-playground</name>
     <modules>
-        <module>jetty-incubate</module>
         <module>jetty-router</module>
         <module>jetty-mvc-classic</module>
         <module>jetty-mvc-annotate</module>
         <module>jetty-flux-mvc</module>
         <module>jetty-flux-react</module>
-        <module>zesty-quick-template</module>
     </modules>
 </project>

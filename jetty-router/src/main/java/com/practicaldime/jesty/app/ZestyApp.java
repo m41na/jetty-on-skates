@@ -106,7 +106,7 @@ public class ZestyApp {
 			public void handle(HandlerRequest request, HandlerResponse response) {
 				response.render("upload", Maps.newHashMap());
 			}
-		}).post("/www/upload", "", "multipart/form-data", new HandlerServlet() {
+		}).post("/www/upload", "", "multipart/form-data", null, new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -190,7 +190,7 @@ public class ZestyApp {
 
 				response.redirect(303, app.resolve("/todos/refresh"));
 			}
-		}).delete("/todos", "application/json", "", new HandlerServlet() {
+		}).delete("/todos", "application/json", "", null, new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -207,6 +207,30 @@ public class ZestyApp {
 			public void handle(HandlerRequest request, HandlerResponse response) {
 				int status = todos.clearAllTasks();
 				response.json(status);
+			}
+		}).get("/async/{value}", (holder)->holder.getRegistration().setAsyncSupported(true), new HandlerServlet() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handle(HandlerRequest request, HandlerResponse response) {
+				response.setContentType("text/html;charset=UTF-8");
+	            String param = request.param("value");
+	            
+	            // Set it to the number of elements you want in the Fibonacci Series
+	   		 	int maxNumber = Integer.valueOf(param); 
+	   		 	int previousNumber = 0;
+	   		 	int nextNumber = 1;
+	   		 
+	   	        System.out.print("Fibonacci Series of "+maxNumber+" numbers:");
+	   	        StringBuilder result = new StringBuilder();
+	   	        for (int i = 1; i <= maxNumber; ++i){
+	   	            result.append(previousNumber).append(", ");			   	      
+	   	            int sum = previousNumber + nextNumber;
+	   	            previousNumber = nextNumber;
+	   	            nextNumber = sum;
+	   	        }
+	   	        
+	            response.send(result.toString());
 			}
 		}).get("/basex/{source}", new HandlerServlet() {
 			private static final long serialVersionUID = 1L;
