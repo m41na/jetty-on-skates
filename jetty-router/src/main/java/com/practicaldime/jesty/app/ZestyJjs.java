@@ -11,7 +11,7 @@ import com.practicaldime.zesty.app.AppProvider;
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
-public class ZestySh {
+public class ZestyJjs {
 
 	private static final NashornScriptEngineFactory FACTORY = new NashornScriptEngineFactory();
 	public static final ScriptEngine ENGINE = FACTORY.getScriptEngine("-scripting", "-doe", "-ot", "--language=es6");
@@ -37,6 +37,6 @@ public class ZestySh {
 	}
 
 	public static void main(String... args) throws ScriptException, NoSuchMethodException, IOException {
-		new ZestySh().start(args);
+		new ZestyJjs().start(args);
 	}
 }

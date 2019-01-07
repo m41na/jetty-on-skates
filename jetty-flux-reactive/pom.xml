@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.practicaldime.works</groupId>
-    <artifactId>jetty-flux-react</artifactId>
+    <artifactId>jetty-flux-reactive</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
@@ -109,5 +109,5 @@
             </plugin>
         </plugins>
     </build>
-    <name>jetty-flux-react</name>
+    <name>jetty-flux-reactive</name>
 </project>

@@ -161,6 +161,7 @@
         <module>jetty-mvc-classic</module>
         <module>jetty-mvc-annotate</module>
         <module>jetty-flux-mvc</module>
-        <module>jetty-flux-react</module>
+        <module>jetty-flux-reactive</module>
+        <module>jetty-graphql</module>
     </modules>
 </project>

@@ -46,7 +46,7 @@ hs_err_pid*
 /jetty-mvc-annotate/target/
 /jetty-flux-mvc/target/
 /jetty-flux-mvc/nbproject/
-/jetty-flux-react/target/
+/jetty-flux-reactive/target/
 /zesty-quickstart/target/
 /zesty-startup/target/
 /zesty-app-template/target/

@@ -16,10 +16,10 @@ import com.google.common.collect.Maps;
 import com.practicaldime.jesty.todos.Task;
 import com.practicaldime.jesty.todos.spring.TodosDaoSpring;
 import com.practicaldime.zesty.app.AppServer;
-import com.practicaldime.zesty.extras.AppWsEvents;
 import com.practicaldime.zesty.servlet.HandlerRequest;
 import com.practicaldime.zesty.servlet.HandlerResponse;
 import com.practicaldime.zesty.servlet.HandlerServlet;
+import com.practicaldime.zesty.websock.AppWsEvents;
 
 public class ZestyApp {
 
@@ -261,7 +261,7 @@ public class ZestyApp {
 					String xml = new String(request.body());
 					LOG.debug(xml);
 
-					// save to disl and respond
+					// save to disk and respond
 					String type = request.getHeader("type");
 					try (FileWriter fout = new FileWriter(new File("www/capture/", source + type))) {
 						fout.write(xml);
