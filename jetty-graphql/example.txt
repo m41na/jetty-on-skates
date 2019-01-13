@@ -1,0 +1,67 @@
+{
+  allLinks{
+    url
+  }
+} 
+
+mutation createLink {
+  createLink(url: "http://luckpot.com", description: "lucky luck"){
+  	url
+  	description
+  }
+}
+
+mutation {
+  createUser(
+    name: "steve", authProvider: {
+      email: "myemail",
+      password: "secret"
+  }){
+    id
+    name
+  }
+}
+
+{
+  "data": {
+    "createUser": {
+      "id": "5c3531b295c9b967ef390883",
+      "name": "steve"
+    }
+  }
+}
+
+mutation {
+  signinUser(auth: {email: "myemail", password: "secret"}){
+  token,
+  user{
+    id
+    name
+  }
+}
+
+{
+  "data": {
+    "signinUser": {
+      "token": "5c3531b295c9b967ef390883",
+      "user": {
+        "id": "5c3531b295c9b967ef390883",
+        "name": "steve"
+      }
+    }
+  }
+}
+
+mutation vote {
+  createVote(
+  	linkId: "5c35460695c9b97603ab183c",
+  	userId: "5c3531b295c9b967ef390883") {
+  	  createdAt
+  	  link {
+  	    url
+  	  }
+  	  user {
+  	    name
+  	  }
+  }
+}

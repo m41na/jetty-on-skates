@@ -133,7 +133,7 @@
                 <!-- Footer -->
                 <footer class="footer py-5 bg-dark">
                     <div class="container">
-                        <p class="m-0 text-center text-white">Copyright &#169; JarredWeb 2018</p>
+                        <p class="m-0 text-center text-white">Copyright &#169; practicaldime 2018</p>
                     </div>
                     <!-- /.container -->
                 </footer>
