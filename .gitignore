@@ -51,3 +51,7 @@ hs_err_pid*
 /zesty-startup/target/
 /zesty-app-template/target/
 /zesty-quick-template/target/
+
+**/*.idea/
+**/*.iml
+**/*.db

@@ -163,5 +163,6 @@
         <module>jetty-flux-mvc</module>
         <module>jetty-flux-reactive</module>
         <module>jetty-graphql</module>
+        <module>jetty-async-servlet</module>
     </modules>
 </project>

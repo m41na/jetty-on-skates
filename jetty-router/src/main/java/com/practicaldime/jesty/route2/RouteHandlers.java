@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.util.annotation.ManagedObject;
 
-import com.practicaldime.zesty.basics.AppRoutes;
+import com.practicaldime.zesty.basics.AppRouter;
 import com.practicaldime.zesty.router.RouteSearch;
 
 /**
@@ -22,13 +22,13 @@ import com.practicaldime.zesty.router.RouteSearch;
 @ManagedObject("Route Handlers Collection")
 public class RouteHandlers extends HandlerCollection {
 
-    private final AppRoutes routes;
+    private final AppRouter routes;
 
-    public RouteHandlers(AppRoutes routes) {
+    public RouteHandlers(AppRouter routes) {
         this.routes = routes;
     }
 
-    public RouteHandlers(AppRoutes routes, Handler... handlers) {
+    public RouteHandlers(AppRouter routes, Handler... handlers) {
         super(handlers);
         this.routes = routes;
     }

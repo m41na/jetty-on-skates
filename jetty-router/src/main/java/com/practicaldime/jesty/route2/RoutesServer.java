@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler;
 
-import com.practicaldime.zesty.basics.AppRoutes;
+import com.practicaldime.zesty.basics.AppRouter;
 import com.practicaldime.zesty.router.MethodRouter;
 import com.practicaldime.zesty.router.Route;
 
@@ -57,7 +57,7 @@ public class RoutesServer {
             contextV});
         
         //try using router
-        AppRoutes routes = new AppRoutes(new MethodRouter());
+        AppRouter routes = new AppRouter(new MethodRouter());
         Route helloRoute = new Route("/hello/:lang", "get", "", "");
         routes.addRoute(helloRoute);
         RouteHandler helloHandler = new RouteHandler(helloRoute);

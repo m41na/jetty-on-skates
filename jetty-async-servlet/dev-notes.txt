@@ -1,0 +1,5 @@
+remove all file found that matching criteria
+find . -type f -name '*.db' -delete
+
+remove from git cache but not file system
+git rm -r  --cache **/*.iml
