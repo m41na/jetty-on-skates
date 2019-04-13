@@ -19,7 +19,8 @@ import com.practicaldime.zesty.app.AppServer;
 import com.practicaldime.zesty.servlet.HandlerRequest;
 import com.practicaldime.zesty.servlet.HandlerResponse;
 import com.practicaldime.zesty.servlet.HandlerServlet;
-import com.practicaldime.zesty.websock.AppWsEvents;
+import com.practicaldime.zesty.websock.AppWsPolicy;
+import com.practicaldime.zesty.websock.AppWsHandler;
 
 public class ZestyApp {
 
@@ -283,7 +284,7 @@ public class ZestyApp {
 					response.send("no content");
 				}
 			}
-		}).websocket("/events/*", AppWsEvents::new)
+		}).websocket("/events/*", () -> new AppWsHandler("flash"), () -> AppWsPolicy.defaultConfig())
 			//.wordpress("/var/www/wordpress", "http://localhost:9000")
 			.listen(port, host, (msg)-> System.out.println(msg));
 	}

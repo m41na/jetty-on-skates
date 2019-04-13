@@ -51,3 +51,4 @@ input LinkFilter {
   description_contains: String
   url_contains: String
 }
+

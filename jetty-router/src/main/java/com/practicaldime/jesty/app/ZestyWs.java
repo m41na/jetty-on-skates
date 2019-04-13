@@ -7,7 +7,8 @@ import com.practicaldime.zesty.app.AppServer;
 import com.practicaldime.zesty.servlet.HandlerRequest;
 import com.practicaldime.zesty.servlet.HandlerResponse;
 import com.practicaldime.zesty.servlet.HandlerServlet;
-import com.practicaldime.zesty.websock.AppWsEvents;
+import com.practicaldime.zesty.websock.AppWsPolicy;
+import com.practicaldime.zesty.websock.AppWsHandler;
 
 public class ZestyWs {
 
@@ -29,6 +30,7 @@ public class ZestyWs {
 			public void handle(HandlerRequest request, HandlerResponse response) {
 				response.render("index", Maps.newHashMap());
 			}
-		}).websocket("/events/*", AppWsEvents::new).listen(port, host, (msg) -> System.out.println(msg));
+		}).websocket("/events/*", () -> new AppWsHandler("events"), () -> AppWsPolicy.defaultConfig())
+		.listen(port, host, (msg) -> System.out.println(msg));
 	}
 }

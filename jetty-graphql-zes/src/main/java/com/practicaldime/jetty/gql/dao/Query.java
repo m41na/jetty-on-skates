@@ -2,11 +2,11 @@ package com.practicaldime.jetty.gql.dao;
 
 import java.util.List;
 
-import com.coxautodev.graphql.tools.GraphQLRootResolver;
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.practicaldime.jetty.gql.model.Link;
 import com.practicaldime.jetty.gql.model.LinkFilter;
 
-public class Query implements GraphQLRootResolver {
+public class Query implements GraphQLQueryResolver {
     
 	private final LinkRepository linkRepository;
 
