@@ -2,7 +2,6 @@ package com.practicaldime.jetty.gql.servlet;
 
 import java.util.Optional;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +9,8 @@ import com.coxautodev.graphql.tools.SchemaParser;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.practicaldime.jetty.gql.dao.LinkRepository;
+import com.practicaldime.jetty.gql.dao.LinkRepositoryImpl;
+import com.practicaldime.jetty.gql.dao.LinkRepositoryPub;
 import com.practicaldime.jetty.gql.dao.LinkResolver;
 import com.practicaldime.jetty.gql.dao.Mutation;
 import com.practicaldime.jetty.gql.dao.Query;
@@ -17,9 +18,11 @@ import com.practicaldime.jetty.gql.dao.SigninResolver;
 import com.practicaldime.jetty.gql.dao.UserRepository;
 import com.practicaldime.jetty.gql.dao.VoteRepository;
 import com.practicaldime.jetty.gql.dao.VoteResolver;
+import com.practicaldime.jetty.gql.listener.AppEvent;
 import com.practicaldime.jetty.gql.model.AuthContext;
 import com.practicaldime.jetty.gql.model.Scalars;
 import com.practicaldime.jetty.gql.model.User;
+import com.practicaldime.jetty.gql.websock.LinkCreated;
 
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.DefaultGraphQLContextBuilder;
@@ -28,23 +31,27 @@ import graphql.servlet.GraphQLContext;
 import graphql.servlet.GraphQLContextBuilder;
 import graphql.servlet.GraphQLHttpServlet;
 import graphql.servlet.GraphQLInvocationInputFactory;
+import io.reactivex.subjects.PublishSubject;
 
-@WebServlet(urlPatterns = "/graphql")
 public class GraphQLEndpoint extends GraphQLHttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final LinkRepository linkRepository;
+	private static LinkRepository linkRepository;
 	private static final UserRepository userRepository;
 	private static final VoteRepository voteRepository;
 	
 	static {
 		MongoClient client = new MongoClient();
 		MongoDatabase mongo = client.getDatabase("admin");
-        linkRepository = new LinkRepository(mongo.getCollection("links"));
+        linkRepository = new LinkRepositoryImpl(mongo.getCollection("links"));
         userRepository = new UserRepository(mongo.getCollection("users"));
         voteRepository = new VoteRepository(mongo.getCollection("votes"));
         Runtime.getRuntime().addShutdownHook(new Thread(()->client.close()));
+	}
+
+	public GraphQLEndpoint(PublishSubject<AppEvent<LinkCreated>> publisher) {
+		linkRepository = new LinkRepositoryPub(linkRepository, publisher);
 	}
 
 	@Override

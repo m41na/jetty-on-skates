@@ -27,7 +27,7 @@
 			<artifactId>zesty-router</artifactId>
 			<version>0.1.0</version>
 		</dependency>
-		
+
 		<!-- graphql -->
 		<dependency>
 			<groupId>com.graphql-java-kickstart</groupId>
@@ -40,7 +40,14 @@
 			<artifactId>graphql-java-tools</artifactId>
 			<version>5.5.1</version>
 		</dependency>
-		
+
+		<!-- reactive extensions -->
+		<dependency>
+			<groupId>io.reactivex.rxjava2</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>2.2.8</version>
+		</dependency>
+
 		<!-- spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>

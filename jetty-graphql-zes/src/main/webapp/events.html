@@ -67,7 +67,19 @@
 
         const ws = new WebSocket(url, protocols);
         ws.onopen = function(event){
-            send("I'm connected now");
+            let query = `
+                subscription linkCreatedSubscription{
+                    linkCreated {
+                        id
+                        url
+                        postedBy
+                    }
+                }`;
+            let graphqlMsg = {
+                    query: query,
+                    variables: {}
+                };
+            send(JSON.stringify(graphqlMsg));
         }
 
         ws.onmessage = function(event){

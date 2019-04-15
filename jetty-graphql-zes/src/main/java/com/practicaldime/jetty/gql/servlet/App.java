@@ -6,10 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
+import com.practicaldime.jetty.gql.listener.AppEvent;
+import com.practicaldime.jetty.gql.websock.LinkCreated;
+import com.practicaldime.jetty.gql.websock.PublishWsAdapter;
+import com.practicaldime.jetty.gql.websock.SchemaProvider;
 import com.practicaldime.zesty.app.AppServer;
 import com.practicaldime.zesty.servlet.HandlerConfig;
-import com.practicaldime.zesty.websock.AppWsPolicy;
-import com.practicaldime.zesty.websock.AppWsHandler;
+
+import io.reactivex.subjects.PublishSubject;
 
 public class App {
 
@@ -28,9 +32,13 @@ private static final Logger LOG = LoggerFactory.getLogger(App.class);
 			handler.setAsyncSupported(true);
 		};
 
+		PublishSubject<AppEvent<LinkCreated>> publisher = PublishSubject.create();
+		SchemaProvider provider = new SchemaProvider(publisher);
+		PublishWsAdapter wsHandler = new PublishWsAdapter(provider);
+
 		new AppServer(props).router()
-		.servlet("/graphql", config, new GraphQLEndpoint())
-		.websocket("/events", () -> new AppWsHandler("events"), () -> AppWsPolicy.defaultConfig())
+		.servlet("/graphql", config, new GraphQLEndpoint(publisher))
+		.websocket("/events", () -> wsHandler)
 		.listen(port, host, (msg) -> {
 			LOG.info(msg);
 		});		

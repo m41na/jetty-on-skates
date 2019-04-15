@@ -4,13 +4,13 @@ public class LinkCreated {
 
 	private final String id;
     private final String url;
-    private final String description;
+    private final String postedBy;
     
-	public LinkCreated(String id, String url, String description) {
+	public LinkCreated(String id, String url, String postedBy) {
 		super();
 		this.id = id;
 		this.url = url;
-		this.description = description;
+		this.postedBy = postedBy;
 	}
 
 	public String getId() {
@@ -21,7 +21,7 @@ public class LinkCreated {
 		return url;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getPostedBy() {
+		return postedBy;
 	}    
 }
