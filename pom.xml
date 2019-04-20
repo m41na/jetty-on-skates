@@ -162,7 +162,9 @@
         <module>jetty-mvc-annotate</module>
         <module>jetty-flux-mvc</module>
         <module>jetty-flux-reactive</module>
-        <module>jetty-graphql</module>
         <module>jetty-async-servlet</module>
+        <module>jetty-graphql</module>
+        <module>jetty-graphql-zesty</module>
+        <module>jetty-graphql-no-servlet</module>
     </modules>
 </project>

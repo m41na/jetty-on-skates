@@ -1,0 +1,173 @@
+{
+  allLinks{
+    url
+  }
+} 
+
+mutation createLink {
+  createLink(url: "http://luckpot.com", description: "lucky luck"){
+  	url
+  	description
+  }
+}
+
+mutation {
+  createUser(
+    name: "steve", authProvider: {
+      email: "myemail",
+      password: "secret"
+  }){
+    id
+    name
+  }
+}
+
+{
+  "data": {
+    "createUser": {
+      "id": "5c3531b295c9b967ef390883",
+      "name": "steve"
+    }
+  }
+}
+
+mutation createUser{
+  createUser(
+    name: "Darkstar"
+  	authProvider: {
+      email: "admin@email.com"
+      password: "admin"
+    }
+  ){
+    id
+    name
+  }
+}
+
+{
+  "data": {
+    "createUser": {
+      "id": "5caeaefc9421e62f04bad856",
+      "name": "Darkstar"
+    }
+  }
+}
+
+mutation {
+  signinUser(auth: {email: "myemail", password: "secret"}){
+  token,
+  user{
+    id
+    name
+  }
+}
+
+{
+  "data": {
+    "signinUser": {
+      "token": "5c3531b295c9b967ef390883",
+      "user": {
+        "id": "5c3531b295c9b967ef390883",
+        "name": "steve"
+      }
+    }
+  }
+}
+
+mutation signIn{
+  signinUser(
+    auth: {
+      email: "admin@email.com",
+      password: "admin"
+    }
+  ){
+    token
+    user{
+      id
+      name
+    }
+  }
+}
+
+{
+  "data": {
+    "signinUser": {
+      "token": "5caeaefc9421e62f04bad856",
+      "user": {
+        "id": "5caeaefc9421e62f04bad856",
+        "name": "Darkstar"
+      }
+    }
+  }
+}
+
+Authorization 'Bearer 5caeaefc9421e62f04bad856'
+
+mutation link{
+  createLink(
+    url: "http://practicaldime.org"
+    description: "zesty home"
+  ){
+    id
+    url
+  }
+}
+
+{
+  "data": {
+    "createLink": {
+      "id": "5caeb3b39421e623782b63b6",
+      "url": "http://practicaldime.org"
+    }
+  }
+}
+
+query{
+  allLinks{
+    id
+    url
+  }
+}
+
+{
+  "data": {
+    "allLinks": [
+      {
+        "id": "5caeb3b39421e623782b63b6",
+        "url": "http://practicaldime.org"
+      },
+      {
+        "id": "5caeb40a9421e623782b63b7",
+        "url": "http://practicaldime.com"
+      }
+    ]
+  }
+}
+
+mutation vote {
+  createVote(
+  	linkId: "5caeb3b39421e623782b63b6",
+  	userId: "5caeaefc9421e62f04bad856") {
+  	  createdAt
+  	  link {
+  	    url
+  	  }
+  	  user {
+  	    name
+  	  }
+  }
+}
+
+{
+  "data": {
+    "createVote": {
+      "createdAt": "2019-04-11T03:31:43.3083401Z",
+      "link": {
+        "url": "http://practicaldime.org"
+      },
+      "user": {
+        "name": "Darkstar"
+      }
+    }
+  }
+}
