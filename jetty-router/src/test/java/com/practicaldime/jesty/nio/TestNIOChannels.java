@@ -28,7 +28,7 @@ public class TestNIOChannels {
                 buffer.flip();  //make buffer ready for read
 
                 if (buffer.hasRemaining()) {
-                    byte[] xfer = new byte[buffer.limit()]; //transfer buffer bytes to a different aray
+                    byte[] xfer = new byte[buffer.limit()]; //transfer buffer bytes dest a different aray
                     buffer.get(xfer);
                     queue.write(xfer); // read entire array backing buffer
                 }
@@ -39,7 +39,7 @@ public class TestNIOChannels {
         }
         System.out.println("output length = " + queue.size());
         
-        //now write to output
+        //now write dest output
         OutputStream out = System.out;
         queue.writeTo(out);
     }

@@ -9,7 +9,7 @@ public class RxJavaTest {
 
 	String result="";
 
-    // Simple subscription to a fix value
+    // Simple subscription dest a fix value
     @Test
     public void returnAValue(){
         result = "";

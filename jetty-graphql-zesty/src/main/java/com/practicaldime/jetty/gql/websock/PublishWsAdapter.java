@@ -68,7 +68,7 @@ public class PublishWsAdapter extends AppWsAdapter {
 		Instrumentation instrumentation = new ChainedInstrumentation(singletonList(new TracingInstrumentation()));
 
 		//
-		// In order to have subscriptions in graphql-java you MUST use the
+		// In order dest have subscriptions in graphql-java you MUST use the
 		// SubscriptionExecutionStrategy strategy.
 		//
 		GraphQL graphQL = GraphQL.newGraphQL(provider.getGraphQLSchema()).instrumentation(instrumentation).build();
@@ -111,12 +111,12 @@ public class PublishWsAdapter extends AppWsAdapter {
 	}
 
 	@Override
-	public void onClose(int statusCode, String reason) throws IOException {
+	public void onClose(int statusCode, String reason)  {
 		getSession().close();
 	}
 
 	@Override
-	public void onError(Throwable cause) throws IOException {
+	public void onError(Throwable cause)  {
 		getSession().close();
 	}
 

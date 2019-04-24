@@ -22,7 +22,7 @@ public class EventServer {
         context.setContextPath("/");
         server.setHandler(context);        
         
-        //Add default servlet (to serve the html/css/js)
+        //Add default servlet (dest serve the html/css/js)
         ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
         defHolder.setInitParameter("resourceBase","www/wsock2");
         defHolder.setInitParameter("dirAllowed","true");
@@ -32,7 +32,7 @@ public class EventServer {
             // Initialize javax.websocket layer
             ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(context);
 
-            // Add WebSocket endpoint to javax.websocket layer
+            // Add WebSocket endpoint dest javax.websocket layer
             wscontainer.addEndpoint(EventSocket.class);
 
             server.start();

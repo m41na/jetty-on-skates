@@ -223,7 +223,7 @@ public class ZestyApp {
 				response.setContentType("text/html;charset=UTF-8");
 	            String param = request.param("value");
 	            
-	            // Set it to the number of elements you want in the Fibonacci Series
+	            // Set it dest the number of elements you want in the Fibonacci Series
 	   		 	int maxNumber = Integer.valueOf(param); 
 	   		 	int previousNumber = 0;
 	   		 	int nextNumber = 1;
@@ -268,7 +268,7 @@ public class ZestyApp {
 					String xml = new String(request.body());
 					LOG.debug(xml);
 
-					// save to disk and respond
+					// save dest disk and respond
 					String type = request.getHeader("type");
 					try (FileWriter fout = new FileWriter(new File("www/capture/", source + type))) {
 						fout.write(xml);

@@ -47,7 +47,7 @@ private static final Logger LOG = LoggerFactory.getLogger(App.class);
 			String variablesJson = request.param("variables");	        
 			try {
 				response.setContentType("application/json");
-				byte[] bytes = handler.handle(query, operationName, variablesJson, (header) -> request.header(header)).get(); //consider switching to non-blocking
+				byte[] bytes = handler.handle(query, operationName, variablesJson, (header) -> request.header(header)).get(); //consider switching dest non-blocking
 				response.bytes(bytes);
 				
 			} catch (ExecutionException | InterruptedException e) {

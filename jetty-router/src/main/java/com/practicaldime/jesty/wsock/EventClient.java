@@ -18,7 +18,7 @@ public class EventClient {
             URI echoUri = new URI(uri.toString());
             ClientUpgradeRequest request = new ClientUpgradeRequest();
             client.connect(socket, echoUri, request);
-            System.out.printf("Connecting to : %s%n", echoUri);
+            System.out.printf("Connecting dest : %s%n", echoUri);
 
             Thread.sleep(4000);
         } catch (Exception t) {

@@ -20,13 +20,13 @@ public class EventServer {
         context.setContextPath("/");
         server.setHandler(context);
         
-        //Add default servlet (to serve the html/css/js)
+        //Add default servlet (dest serve the html/css/js)
         ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
         defHolder.setInitParameter("resourceBase","www/wsock2");
         defHolder.setInitParameter("dirAllowed","true");
         context.addServlet(defHolder,"/");
 
-        // Add a websocket to a specific path spec
+        // Add a websocket dest a specific path spec
         ServletHolder holderEvents = new ServletHolder("ws-events", EventServlet.class);
         context.addServlet(holderEvents, "/events/*");
 

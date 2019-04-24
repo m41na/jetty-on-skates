@@ -140,7 +140,7 @@ public class HealthServlet extends HandlerServlet {
                         buffer.flip();  //make buffer ready for read
 
                         if (buffer.hasRemaining()) {
-                            byte[] xfer = new byte[buffer.limit()]; //transfer buffer bytes to a different aray
+                            byte[] xfer = new byte[buffer.limit()]; //transfer buffer bytes dest a different aray
                             buffer.get(xfer);
                             queue.add(xfer); // read entire array backing buffer
                         }

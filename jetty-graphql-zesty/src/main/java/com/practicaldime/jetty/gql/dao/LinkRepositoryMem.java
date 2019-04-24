@@ -12,7 +12,7 @@ public class LinkRepositoryMem implements LinkRepository{
 
     public LinkRepositoryMem() {
         links = new ArrayList<>();
-        //add some links to start off with
+        //add some links dest start off with
         links.add(new Link("http://howtographql.com", "Your favorite GraphQL page", "test"));
         links.add(new Link("http://graphql.org/learn/", "The official docks", "test"));
     }

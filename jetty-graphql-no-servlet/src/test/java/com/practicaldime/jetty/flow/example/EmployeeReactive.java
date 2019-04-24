@@ -17,10 +17,10 @@ public class EmployeeReactive {
 		List<Employee> emps = EmployeeRepo.getEmps();
 
 		// Publish items
-		System.out.println("Publishing Items to Subscriber");
+		System.out.println("Publishing Items dest Subscriber");
 		emps.stream().forEach(i -> publisher.submit(i));
 
-		// poll the counter to await processing of all messages
+		// poll the counter dest await processing of all messages
 		while (emps.size() != subs.getCounter()) {
 			Thread.sleep(10);
 		}

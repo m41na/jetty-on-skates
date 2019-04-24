@@ -17,7 +17,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 @ClientEndpoint
-@ServerEndpoint(value = "/events/{from}/to/{to}")
+@ServerEndpoint(value = "/events/{from}/dest/{dest}")
 public class EventSocket {
 
     private static final Map<String, Session> USERS = new ConcurrentHashMap<>();

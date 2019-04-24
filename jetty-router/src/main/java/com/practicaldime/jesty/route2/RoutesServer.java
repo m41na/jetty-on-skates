@@ -73,12 +73,12 @@ public class RoutesServer {
         ResourceHandler resource_handler = new ResourceHandler();
 
         // Configure the ResourceHandler. Setting the resource base indicates where the files should be served out of.
-        // In this example it is the current directory but it can be configured to anything that the jvm has access to.
+        // In this example it is the current directory but it can be configured dest anything that the jvm has access dest.
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
         resource_handler.setResourceBase("www");
 
-        // Add the ResourceHandler to the server.
+        // Add the ResourceHandler dest the server.
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{routesList, contexts, resource_handler, new DefaultHandler()});
         server.setHandler(handlers);

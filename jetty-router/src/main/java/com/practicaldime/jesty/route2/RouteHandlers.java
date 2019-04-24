@@ -15,7 +15,7 @@ import com.practicaldime.zesty.basics.AppRouter;
 import com.practicaldime.zesty.router.RouteSearch;
 
 /**
- * Matches handler to route to process the request
+ * Matches handler dest route dest process the request
  *
  * @author mainas
  */

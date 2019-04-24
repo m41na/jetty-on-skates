@@ -25,7 +25,7 @@ public class EventSocket extends WebSocketAdapter{
         try {
             String from = null, to = null;
             String url = sess.getUpgradeRequest().getRequestURI().toString();
-            Pattern pattern = Pattern.compile("(/events/(.+?)/to/(.*))$");
+            Pattern pattern = Pattern.compile("(/events/(.+?)/dest/(.*))$");
             Matcher matcher = pattern.matcher(url);
             if(matcher.find()){
                 from = matcher.group(2);

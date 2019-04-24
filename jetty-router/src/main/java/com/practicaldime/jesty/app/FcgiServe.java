@@ -70,7 +70,7 @@ public class FcgiServe {
 		tryHolder.setInitParameter("files", "$path /index.php?p=$path");
 		fcgiContext.addFilter(tryHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
 
-		// Add default servlet (to serve the html/css/js)
+		// Add default servlet (dest serve the html/css/js)
 		ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
 		defHolder.setInitParameter("dirAllowed", "false");
 		fcgiContext.addServlet(defHolder, "/");
